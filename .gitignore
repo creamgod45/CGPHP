@@ -4,3 +4,5 @@ database/
 test
 xampp.bat
 composer.lock
+.idea/
+temp/
