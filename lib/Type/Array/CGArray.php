@@ -34,6 +34,19 @@ class CGArray implements CGArrayInterface
         return $arr;
     }
 
+    public function Merge($string=""){
+        if(!empty($string)){
+            return implode($string, $this->array);
+        }
+        return implode($this->array);
+    }
+    public function getLast(){
+        return $this->array[$this->Size()-1];
+    }
+    public function getFrist(){
+        return $this->array[0];
+    }
+
     public function Add($Mixed): void
     {
         $this->array[] = $Mixed;

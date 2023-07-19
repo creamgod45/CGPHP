@@ -3,9 +3,10 @@
 namespace Auth;
 
 
+use Nette\Utils\DateTime;
+
 class Member
 {
-
     protected int $id;
     protected string $uid;
     protected string $username;
@@ -14,7 +15,7 @@ class Member
     protected bool $administrator;
     protected bool $enable;
     protected string $createdAt;
-    protected \Nette\Utils\DateTime $updatedAt;
+    protected DateTime $updatedAt;
     private bool $isInitialized = false;
 
     public function __construct($list = [])
@@ -24,6 +25,30 @@ class Member
             $this->isInitialized = true;
         }
     }
+
+    public function override(Member $member): void
+    {
+        $this->id = $member->id;
+        $this->uid = $member->uid;
+        $this->username = $member->username;
+        $this->password = $member->password;
+        $this->email = $member->email;
+        $this->administrator = $member->administrator;
+        $this->enable = $member->enable;
+        $this->createdAt = $member->createdAt;
+        $this->updatedAt = $member->updatedAt;
+        $this->isInitialized = $member->isInitialized;
+    }
+
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function __unserialize(array $data): void
+    {
+        // TODO: Implement __unserialize() method.
+    }
+
 
     /**
      * @return bool
@@ -103,6 +128,39 @@ class Member
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function toArray()
+    {
+        return [
+            "id" => $this->id,
+            "uid" => $this->uid,
+            "username" => $this->username,
+            "password" => $this->password,
+            "email" => $this->email,
+            "administrator" => $this->administrator,
+            "enable" => $this->enable,
+            "createdAt" => $this->createdAt,
+            "updatedAt" => $this->updatedAt->getTimestamp(),
+            "isInitialized" => $this->isInitialized,
+        ];
+    }
+
+    public function setArray($array = [])
+    {
+        $this->id = $array["id"];
+        $this->uid = $array["uid"];
+        $this->username = $array["username"];
+        $this->password = $array["password"];
+        $this->email = $array["email"];
+        $this->administrator = $array["administrator"];
+        $this->enable = $array["enable"];
+        $this->createdAt = $array["createdAt"];
+        try {
+            $this->updatedAt = DateTime::from($array["updatedAt"]);
+        } catch (\Exception $e) {
+        }
+        $this->isInitialized = $array["isInitialized"];
     }
 
     /*public function toCGConverter(){

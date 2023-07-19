@@ -20,9 +20,9 @@ class CSRF
         return $_SESSION["CSRF_" . $this->key];
     }
 
-    public function equal($string): bool
+    public function equal($object): bool
     {
-        return $_SESSION["CSRF_" . $this->key] === $string;
+        return $_SESSION["CSRF_" . $this->key] === $object;
     }
 
 

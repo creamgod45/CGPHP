@@ -13,6 +13,9 @@ class SESSION
         $this->ignore_key_missing = $ignore_key_missing;
     }
 
+    /**
+     * @return array|false|mixed
+     */
     public function Get()
     {
         if (empty($this->key)) return $_SESSION;

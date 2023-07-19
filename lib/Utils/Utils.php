@@ -467,22 +467,6 @@ class Utils
     }
 
     /**
-     * @param int $length
-     * @return string
-     */
-    public function Get_numer_randoom(int $length = 10): string
-    {
-        $str = "";
-        $characters = array_merge(range('0', '9'));
-        $max = count($characters) - 1;
-        for ($i = 0; $i < $length; $i++) {
-            $rand = random_int(0, $max);
-            $str .= $characters[$rand];
-        }
-        return $str;
-    }
-
-    /**
      * IP 位置
      *
      * @return void
