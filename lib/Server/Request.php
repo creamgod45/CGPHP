@@ -30,6 +30,7 @@ class Request implements RequestInterface
     {
         return new Request_internal($key, $ignore_key_missing);
     }
+
     public function GET(string $key = '', bool $ignore_key_missing = false): GET
     {
         return new GET($key, $ignore_key_missing);
@@ -126,7 +127,8 @@ class Request implements RequestInterface
 
 }
 
-class Request_internal{
+class Request_internal
+{
 
     public string $key;
     public bool $ignore_key_missing;
@@ -137,16 +139,22 @@ class Request_internal{
         $this->ignore_key_missing = $ignore_key_missing;
     }
 
-    public function Get()
+    public function Get($filter=true)
     {
         if (empty($this->key)) return $_REQUEST;
         if ($this->ignore_key_missing) {
             if (@!empty($_REQUEST[$this->key])) {
-                return $_REQUEST[$this->key];
+                if($filter)
+                    return htmlentities($_REQUEST[$this->key]);
+                else
+                    return $_REQUEST[$this->key];
             }
             return null;
         } else {
-            return $_REQUEST[$this->key];
+            if($filter)
+                return htmlentities($_REQUEST[$this->key]);
+            else
+                return $_REQUEST[$this->key];
         }
         return false;
     }

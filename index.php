@@ -35,7 +35,6 @@ require_once 'vendor/autoload.php';
 require_once 'autoload.php';
 
 // Use list
-use Auth\MemberManager;
 use Server\Request;
 use Server\Request\ApplicationLayer;
 use Tracy\Debugger;
@@ -48,10 +47,10 @@ try {
     if (router(1) !== 'api') {
         Debugger::enable();
     }
+    $Config = require "config.php";
     $Utils = new Utils();
     $Request = new Request();
     $ApplicationLayer = new ApplicationLayer();
-    $MemberManager = new MemberManager();
 } catch (Exception $e) {
     $debug = $e;
     var_dump($debug);
@@ -66,6 +65,7 @@ $routers = true;
 include_once "routers.php";
 
 /* @Debug @only_devloper_use */
+if (@!empty($Config)) $Utils->pinv($Config, 'debug');
 if (@!empty($debug)) $Utils->pinv($debug, 'debug');
 if (@!empty(router(null))) $Utils->pinv(router(null), 'router');
 if (@!empty($expire_message)) $Utils->pinv($expire_message, 'expire');

@@ -12,6 +12,7 @@ class ShopCoupon
     public string $Code = "";
     public string $name = "";
     public string $description = "";
+    public DiscountedType $discountedType;
     public float $discountedPrice = 0.0;
     /**
      * @var Member[]
@@ -32,6 +33,7 @@ class ShopCoupon
      * @param string $Code
      * @param string $name
      * @param string $description
+     * @param DiscountedType $discountedType
      * @param float $discountedPrice
      * @param Member[] $allowUsers
      * @param ShopItem[] $allowItems
@@ -41,12 +43,13 @@ class ShopCoupon
      * @param int $creatAt
      * @param DateTime $updateAt
      */
-    public function __construct(string $CouponID, string $Code, string $name, string $description, float $discountedPrice, float $minPrice, float $maxPrice, bool $enable, int $creatAt, DateTime $updateAt, array $allowUsers = [], array $allowItems = [])
+    public function __construct(string $CouponID, string $Code, string $name, string $description, DiscountedType $discountedType, float $discountedPrice, array $allowUsers, array $allowItems, float $minPrice, float $maxPrice, bool $enable, int $creatAt, DateTime $updateAt)
     {
         $this->CouponID = $CouponID;
         $this->Code = $Code;
         $this->name = $name;
         $this->description = $description;
+        $this->discountedType = $discountedType;
         $this->discountedPrice = $discountedPrice;
         $this->allowUsers = $allowUsers;
         $this->allowItems = $allowItems;

@@ -34,16 +34,27 @@ class CGArray implements CGArrayInterface
         return $arr;
     }
 
-    public function Merge($string=""){
-        if(!empty($string)){
+    public function Merge($string = "")
+    {
+        if (!empty($string)) {
             return implode($string, $this->array);
         }
         return implode($this->array);
     }
-    public function getLast(){
-        return $this->array[$this->Size()-1];
+
+    public function getLast()
+    {
+        return $this->array[$this->Size() - 1];
     }
-    public function getFrist(){
+
+    public function Size(): int
+    {
+        // TODO: Implement size() method.
+        return count($this->array);
+    }
+
+    public function getFrist()
+    {
         return $this->array[0];
     }
 
@@ -60,7 +71,12 @@ class CGArray implements CGArrayInterface
     public function AddCallBack($Mixed): CGArray
     {
         $this->array[] = $Mixed;
-        return new CGArray($this->array);
+        return $this;
+    }
+
+    public function Delete($Key){
+        if(empty($this->array[$Key])) return;
+        unset($this->array[$Key]);
     }
 
     public function Remove($Index): void
@@ -71,7 +87,7 @@ class CGArray implements CGArrayInterface
     public function RemoveCallBack($Index): CGArray
     {
         array_splice($this->array, $Index, 1);
-        return new CGArray($this->array);
+        return $this;
     }
 
     public function IsEmpty(): bool
@@ -88,12 +104,6 @@ class CGArray implements CGArrayInterface
     {
         // TODO: Implement get() method.
         return $this->array[$Index];
-    }
-
-    public function Size(): int
-    {
-        // TODO: Implement size() method.
-        return count($this->array);
     }
 
     public function Contains($Mixed): bool

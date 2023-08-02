@@ -3,6 +3,7 @@
 namespace Auth;
 
 
+use Exception;
 use Nette\Utils\DateTime;
 
 class Member
@@ -148,6 +149,7 @@ class Member
 
     public function setArray($array = [])
     {
+        if(empty($array)) return $this;
         $this->id = $array["id"];
         $this->uid = $array["uid"];
         $this->username = $array["username"];
@@ -158,9 +160,10 @@ class Member
         $this->createdAt = $array["createdAt"];
         try {
             $this->updatedAt = DateTime::from($array["updatedAt"]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
         $this->isInitialized = $array["isInitialized"];
+        return $this;
     }
 
     /*public function toCGConverter(){

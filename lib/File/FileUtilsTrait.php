@@ -5,7 +5,7 @@ namespace File;
 
 use Exception;
 
-class FileUtils
+trait FileUtilsTrait
 {
     public static function getFileType(string $Path = "")
     {

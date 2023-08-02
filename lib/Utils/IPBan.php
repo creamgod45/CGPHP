@@ -12,7 +12,7 @@ class IPBan
     public function __construct()
     {
         $this->Utils = new utils();
-        $this->db = new Nette\Database\Connection('mysql:host=127.0.0.1;dbname=vvrzmwkq_home', 'vvrzmwkq_home', 'KFw2)rA_p*6g');
+        $this->db = new Nette\Database\Connection('mysql:host=127.0.0.1;dbname=', '', '');
     }
 
     /* visitorID
@@ -52,7 +52,7 @@ class IPBan
 
     public function canVisitPage($IP): bool
     {
-        if (@$_SESSION['LOCK']===true) {
+        if (@$_SESSION['LOCK'] === true) {
             return false;
         }
         if ($this->isExistIP($IP) && $this->isExpiredIP($IP)) {
@@ -88,7 +88,8 @@ class IPBan
         }
     }
 
-    public function GetIPs(){
+    public function GetIPs()
+    {
         $connection = $this->db;
         return $connection->fetchAll('SELECT * FROM `cgphp_ipban`');
     }

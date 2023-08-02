@@ -6,6 +6,8 @@ use Nette\Utils\DateTime;
 
 class FileBase
 {
+    use FileUtilsTrait;
+
     /**
      * File 唯一辨識碼
      * @var string
@@ -112,7 +114,7 @@ class FileBase
         if ($this->UID === null) {
             return false;
         }
-        if(empty($this->UID)){
+        if (empty($this->UID)) {
             return false;
         }
         return true;

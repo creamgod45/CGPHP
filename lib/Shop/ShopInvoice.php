@@ -16,7 +16,11 @@ class ShopInvoice
     public float $price = 0.0;
     public float $finalPrice = 0.0;
     public float $discount = 0.0;
-    public ShopCoupon $Coupons;
+
+    /**
+     * @var ShopCoupon[]
+     */
+    public array $Coupons;
     public int $creatAt;
     public DateTime $updateAt;
 
@@ -26,11 +30,11 @@ class ShopInvoice
      * @param float $price
      * @param float $finalPrice
      * @param float $discount
-     * @param ShopCoupon $Coupons
+     * @param ShopCoupon[] $Coupons
      * @param int $creatAt
      * @param DateTime $updateAt
      */
-    public function __construct(string $InvoiceID, array $items,CoinType $CoinType, float $price, float $finalPrice, float $discount, ShopCoupon $Coupons, int $creatAt, DateTime $updateAt)
+    public function __construct(string $InvoiceID, array $items, CoinType $CoinType, float $price, float $finalPrice, float $discount, array $Coupons, int $creatAt, DateTime $updateAt)
     {
         $this->InvoiceID = $InvoiceID;
         $this->items = $items;
@@ -109,9 +113,9 @@ class ShopInvoice
     }
 
     /**
-     * @return ShopCoupon
+     * @return ShopCoupon[]
      */
-    public function getCoupons(): ShopCoupon
+    public function getCoupons(): array
     {
         return $this->Coupons;
     }

@@ -114,7 +114,7 @@ class Htmlv2 extends HTML
 
     public function newLine(bool $bool)
     {
-        if($bool)
+        if ($bool)
             $this->newline = PHP_EOL;
         else
             $this->newline = "";
@@ -123,6 +123,6 @@ class Htmlv2 extends HTML
 
     public function build()
     {
-        return $this->HTML->html_Builder($this->array->toArray()).$this->newline;
+        return $this->HTML->html_Builder($this->array->toArray()) . $this->newline;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Shop;
 
+use Nette\Utils\DateTime;
 use Utils\Utils;
 
 class Shop
@@ -13,7 +14,8 @@ class Shop
     public string $owner = "系統";
     public ShopInvoiceList $invoiceList;
     public bool $enable = true;
-
+    public int $creatAt;
+    public DateTime $updateAt;
 
     /**
      * @param string $ShopID
@@ -23,16 +25,50 @@ class Shop
      * @param string $owner
      * @param ShopInvoiceList $invoiceList
      * @param bool $enable
+     * @param int $creatAt
+     * @param DateTime $updateAt
      */
-    public function __construct(string $ShopID, string $name, string $description, ShopItemManager $items, string $owner, ShopInvoiceList $invoiceList, bool $enable)
+    public function __construct(string $ShopID, string $name, string $description, string $owner, bool $enable, int $creatAt, DateTime $updateAt)
     {
         $this->ShopID = $ShopID;
         $this->name = $name;
         $this->description = $description;
-        $this->items = $items;
         $this->owner = $owner;
-        $this->invoiceList = $invoiceList;
         $this->enable = $enable;
+        $this->creatAt = $creatAt;
+        $this->updateAt = $updateAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShopID(): string
+    {
+        return $this->ShopID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnable(): bool
+    {
+        return $this->enable;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCreatAt(): int
+    {
+        return $this->creatAt;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdateAt(): DateTime
+    {
+        return $this->updateAt;
     }
 
 
@@ -93,5 +129,7 @@ class Shop
         $this->owner = $shop->owner;
         $this->invoiceList = $shop->invoiceList;
         $this->enable = $shop->enable;
+        $this->creatAt = $shop->creatAt;
+        $this->updateAt = $shop->updateAt;
     }
 }

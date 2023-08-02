@@ -1,9 +1,11 @@
 <?php
 
 namespace Utils;
+
 use Nette\Utils\FileSystem as FS;
 use Nette\Utils\Finder;
 use Nette\Utils\Json;
+use Nette\Utils\JsonException;
 
 require_once 'AES.php';
 require_once 'utils.php';
@@ -41,7 +43,7 @@ class SearchFile
         $diff = false;
         foreach ($data as $index => $datum) {
             foreach ($datum as $key => $val) {
-                if($val !== $searchFile[$index][$key]){
+                if ($val !== $searchFile[$index][$key]) {
                     $diff = true;
                     break 2;
                 }
@@ -77,7 +79,7 @@ class SearchFile
 
         try {
             $this->data = Json::decode($this->AES->prepareReadMode($read), Json::FORCE_ARRAY | Json::ESCAPE_UNICODE);
-        } catch (\Nette\Utils\JsonException $e) {
+        } catch (JsonException $e) {
         }
         $this->total = count($this->data);
         return $this;
@@ -147,9 +149,9 @@ class SearchFile
         return $this->total;
     }
 
-    public function searchFiles($file_to_search='', $dir='.')
+    public function searchFiles($file_to_search = '', $dir = '.')
     {
-        if(Finder::findFiles($file_to_search)->from($dir) === null) {
+        if (Finder::findFiles($file_to_search)->from($dir) === null) {
             return false;
         }
         return Finder::findFiles($file_to_search)->from($dir);
@@ -159,7 +161,7 @@ class SearchFile
     {
         try {
             $prepareWriteMode = $this->AES->prepareWriteMode(Json::encode($this->data, Json::ESCAPE_UNICODE));
-        } catch (\Nette\Utils\JsonException $e) {
+        } catch (JsonException $e) {
         }
         FS::write('cache.bin', $prepareWriteMode);
         return $this;
