@@ -34,6 +34,18 @@ class CGArray implements CGArrayInterface
         return $arr;
     }
 
+    /**
+     * 搬移陣列中的參數至新的參數
+     */
+    public function shiftKeytoNewKey($oldKey, $newKey,bool $deleteold=true){
+        if($this->IsEmpty()) return false;
+        if(empty($this->Get($oldKey))) return false;
+        $this->Set($newKey, $this->Get($oldKey));
+        if($deleteold){
+            $this->Delete($oldKey);
+        }
+    }
+
     public function Merge($string = "")
     {
         if (!empty($string)) {

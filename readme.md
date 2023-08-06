@@ -112,5 +112,11 @@ include_once "templates/layout.php"; ?>
 
 接下來直接上傳FTP、XAMPP，預覽 http://127.0.0.1/路由名稱 就可以看到剛剛寫的頁面了。
 
+# 更新日誌
+
+- 20230806
+    - 更新 CGArray
+
+
 # TODO 
 
