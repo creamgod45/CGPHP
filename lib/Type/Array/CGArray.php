@@ -2,6 +2,8 @@
 
 namespace Type\Array;
 
+use Utils\Utils;
+
 require_once 'lib/Type/Array/CGArrayInterface.php';
 require_once 'lib/Type/Array/CGPathInterface.php';
 require_once 'lib/Type/Array/CGPath.php';
@@ -39,10 +41,9 @@ class CGArray implements CGArrayInterface
      */
     public function shiftKeytoNewKey($oldKey, $newKey,bool $deleteold=true){
         if($this->IsEmpty()) return false;
-        if(empty($this->Get($oldKey))) return false;
         $this->Set($newKey, $this->Get($oldKey));
         if($deleteold){
-            $this->Delete($oldKey);
+            $this->Delete($oldKey, true);
         }
     }
 
@@ -86,9 +87,13 @@ class CGArray implements CGArrayInterface
         return $this;
     }
 
-    public function Delete($Key){
-        if(empty($this->array[$Key])) return;
-        unset($this->array[$Key]);
+    public function Delete($Key, $force=false){
+        if($force){
+            unset($this->array[$Key]);
+        }else{
+            if(empty($this->array[$Key])) return;
+            unset($this->array[$Key]);
+        }
     }
 
     public function Remove($Index): void
@@ -110,6 +115,16 @@ class CGArray implements CGArrayInterface
     public function IndexOf($Value): bool|int|string
     {
         return array_search($Value, $this->array, true);
+    }
+
+    /**
+     * @param $Index
+     * @return bool|CGArray
+     */
+    public function GetValuetoCGArray($Index): bool|CGArray
+    {
+        if(!is_array($this->array[$Index])) return false;
+        return new CGArray($this->array[$Index]);
     }
 
     public function Get($Index)
