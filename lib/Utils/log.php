@@ -2,16 +2,6 @@
 
 namespace Utils;
 
-date_default_timezone_set("Asia/Taipei");
-
-if (f1(true, true)[0] === "https://") {
-    include_once "/home/vulsdril/chat.zeitfrei.tw/PATH.php";
-} else {
-    include_once "C:/xampp/htdocs/PATH.php";
-}
-
-require_once "Utils.php";
-
 use Nette\Utils\FileSystem as fs;
 
 /**

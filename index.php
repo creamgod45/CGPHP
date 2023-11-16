@@ -35,8 +35,11 @@ require_once 'vendor/autoload.php';
 require_once 'autoload.php';
 
 // Use list
+use Auth\UniqueVisiterID;
+use Nette\Caching\Cache;
+use Nette\Caching\Storages\FileStorage;
+use Server\ApplicationLayer;
 use Server\Request;
-use Server\Request\ApplicationLayer;
 use Tracy\Debugger;
 use Utils\Utils;
 
@@ -51,6 +54,9 @@ try {
     $Utils = new Utils();
     $Request = new Request();
     $ApplicationLayer = new ApplicationLayer();
+    $storage = new FileStorage('temp');
+    $globalcache = new Cache($storage, "globalcache_".time());
+    $uniqueVisiterID = new UniqueVisiterID();
 } catch (Exception $e) {
     $debug = $e;
     var_dump($debug);

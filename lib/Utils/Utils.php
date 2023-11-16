@@ -4,8 +4,6 @@ namespace Utils;
 
 use http\Exception\RuntimeException;
 
-date_default_timezone_set("Asia/Taipei");
-
 /**
  * Plugins module
  * @package lib
@@ -441,7 +439,7 @@ class Utils
      * @param Integer $min
      * @param Integer $max
      * @param Integer $quantity
-     * @return Array
+     * @return array
      */
     public function random_not_repeat(int $min = 1, int $max = 100, int $quantity = 5): array
     {
@@ -469,9 +467,9 @@ class Utils
     /**
      * IP 位置
      *
-     * @return void
+     * @return string
      */
-    public function GetIP()
+    public function GetIP(): string
     {
         if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
             $cip = $_SERVER["HTTP_CLIENT_IP"];
@@ -490,7 +488,7 @@ class Utils
 
     public function get_browser($user_agent)
     {
-        // Make case insensitive.
+        // Make case-insensitive.
         $t = strtolower($user_agent);
 
         // If the string *starts* with the string, strpos returns 0 (i.e., FALSE). Do a ghetto hack and start with a space.

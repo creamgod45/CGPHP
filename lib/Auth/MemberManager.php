@@ -33,7 +33,7 @@ class MemberManager
 
     public static function init()
     {
-        self::$conn = new Connection('mysql:host=127.0.0.1;dbname=vvrzmwkq_home', '', '');
+        self::$conn = new Connection('mysql:host=127.0.0.1;dbname=', '', '');
         self::$conn->connect();
     }
 

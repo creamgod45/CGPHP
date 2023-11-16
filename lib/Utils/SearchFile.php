@@ -6,10 +6,8 @@ use Nette\Utils\FileSystem as FS;
 use Nette\Utils\Finder;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
-
-require_once 'AES.php';
-require_once 'utils.php';
-
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 // filename time type
 class SearchFile

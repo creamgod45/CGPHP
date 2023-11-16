@@ -3,8 +3,6 @@
 
 namespace Utils;
 
-date_default_timezone_set("Asia/Taipei");
-
 /**
  * DID 字典資料模型
  */

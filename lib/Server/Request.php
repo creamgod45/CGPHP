@@ -2,18 +2,6 @@
 
 namespace Server;
 
-use Server\Request\COOKIE;
-use Server\Request\CSRF;
-use Server\Request\ENV;
-use Server\Request\FILES;
-use Server\Request\GET;
-use Server\Request\HEADER;
-use Server\Request\POST;
-use Server\Request\RequestInterface;
-use Server\Request\SERVER;
-use Server\Request\SESSION;
-use Server\Request\Timeout;
-
 require_once 'RequestInterface.php';
 require_once 'GET.php';
 require_once 'POST.php';
@@ -122,6 +110,10 @@ class Request implements RequestInterface
             return false;
         }
         return new Timeout($Key);
+    }
+
+    public function Router(){
+        return new Router();
     }
 
 

@@ -1,8 +1,7 @@
 <?php
 
 namespace Utils;
-date_default_timezone_set('Asia/Taipei');
-require_once 'utils.php';
+use Nette\Database\Connection;
 
 class IPBan
 {
@@ -12,7 +11,7 @@ class IPBan
     public function __construct()
     {
         $this->Utils = new utils();
-        $this->db = new Nette\Database\Connection('mysql:host=127.0.0.1;dbname=', '', '');
+        $this->db = new Connection('mysql:host=127.0.0.1;dbname=', '', '');
     }
 
     /* visitorID

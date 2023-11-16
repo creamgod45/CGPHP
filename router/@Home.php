@@ -1,78 +1,27 @@
 <?php
-
-use Utils\HTML;
-
 /**
- * @var Utils\Utils $Utils
- * @var Server\Request $Request
- * @var Auth\MemberManager $MemberManager
- * @var Server\Request\ApplicationLayer $ApplicationLayer
+ * @var \Type\Array\CGArray $Config
+ * @var \Utils\Utils $Utils
+ * @var \Server\Request $Request
+ * @var \Server\ApplicationLayer $ApplicationLayer
+ * @var \Nette\Caching\Storages\FileStorage $storage
+ * @var \Nette\Caching\Cache $globalcache
+ * @var \Auth\UniqueVisiterID $uniqueVisiterID
+ * @var bool $routers
  */
+if (@!$routers) exit();
 
-$title = "首頁";
-$assets = [
-    (new HTML())->html_Builder([
-        "tagname" => "link",
-        "config" => [
-            "config.close" => false,
-            "href" => $Utils->resources("css/all.css"),
-            "rel" => "stylesheet",
-            "type" => "text/css"
-        ]
-    ]),
-    (new HTML())->html_Builder([
-        "tagname" => "script",
-        "config" => [
-            "config.close" => true,
-            "src" => $Utils->resources("js/all.js"),
-        ]
-    ]),
-    (new HTML())->html_Builder([
-        "tagname" => "script",
-        "config" => [
-            "config.close" => true,
-            "src" => $Utils->resources("js/bootstrap.min.js"),
-        ]
-    ]),
-    (new HTML())->html_Builder([
-        "tagname" => "link",
-        "config" => [
-            "config.close" => false,
-            "href" => $Utils->resources("css/bootstrap.min.css"),
-            "rel" => "stylesheet",
-            "type" => "text/css"
-        ]
-    ]),
-    (new HTML())->html_Builder([
-        "tagname" => "link",
-        "config" => [
-            "config.close" => false,
-            "href" => $Utils->resources("scss/initialize.css"),
-            "rel" => "stylesheet",
-            "type" => "text/css"
-        ]
-    ]),
-    (new HTML())->html_Builder([
-        "tagname" => "link",
-        "config" => [
-            "config.close" => false,
-            "href" => $Utils->resources("scss/menu.css"),
-            "rel" => "stylesheet",
-            "type" => "text/css"
-        ]
-    ]),
-    (new HTML())->html_Builder([
-        "tagname" => "link",
-        "config" => [
-            "config.close" => false,
-            "href" => $Utils->resources("scss/@Home.css"),
-            "rel" => "stylesheet",
-            "type" => "text/css"
-        ]
-    ]),
-];
-$content = "@Home.php";
-$footer = "";
-$script = "";
-$menu = true;
-include_once "templates/layout.php";
+use Utils\BootBuilder;
+use Utils\csstype;
+
+$bb = new BootBuilder();
+$bb->setTitle("首頁");
+$bb->setContentFile("@Home.php");
+$bb->bootstrap();
+$bb->fontawesome();
+$bb->initialize_css();
+$bb->menu();
+$bb->setMenu(true);
+$bb->addAsset($bb->css("@Home.css",[], csstype::css));
+$bb->addAsset($bb->js("js/@Home.js",[]));
+$bb->builder($Config,$Utils,$Request,$ApplicationLayer,$storage,$globalcache,$uniqueVisiterID);

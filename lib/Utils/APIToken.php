@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Utils\API;
+namespace Utils;
 
 class APIToken
 {

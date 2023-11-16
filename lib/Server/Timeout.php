@@ -1,6 +1,6 @@
 <?php
 
-namespace Server\Request;
+namespace Server;
 
 class Timeout
 {

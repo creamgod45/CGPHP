@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var bool $routers
+ */
+if (@!$routers) exit();?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,13 +20,15 @@
     {
         $random_number = rand(0, 100) / 100;
         if ($random_number < 0.7) {
-return "<!-- 產生 by CGPHP Framework 專案名稱: ".$Config->Get(ConfigKeyField::Name->value)." 版本: ".$Config->Get(ConfigKeyField::Version->value)." 作者: ".$Config->Get(ConfigKeyField::Auther->value)." ".(new Utils\Utils())->Get_eng_randoom(20)." -->";
+return "<!--".(new Utils\Utils())->Get_eng_randoom(rand(1,100))." 產生 by CGPHP Framework 專案名稱: ".$Config->Get(ConfigKeyField::Name->value)." 版本: ".$Config->Get(ConfigKeyField::Version->value)." 作者: ".$Config->Get(ConfigKeyField::Auther->value)." ".(new Utils\Utils())->Get_eng_randoom(rand(1,100))." --><!---->";
         }
     }
 
 echo rand_commit($Config);
     if (!empty($assets)) {
-        echo implode(PHP_EOL, $assets);
+        foreach ($assets as $asset) {
+            echo rand_commit($Config).$asset.rand_commit($Config).PHP_EOL;
+        }
     } ?>
 
     <title><?= @$title ?></title>

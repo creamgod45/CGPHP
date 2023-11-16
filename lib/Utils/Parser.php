@@ -4,7 +4,7 @@ namespace Utils;
 
 use Exception;
 use Nette\Utils\FileSystem;
-use Server\Request;
+use Server;
 use Type\Array\CGArray;
 use Type\String\CGString;
 
@@ -91,10 +91,10 @@ class Parser
             case "@placeholder":
                 break;
             case "@setvar":
-                (new Request\SESSION("Parser." . $value[0], true))->Set($value[1]);
+                (new Server\SESSION("Parser." . $value[0], true))->Set($value[1]);
                 break;
             case "@var":
-                $this->placeHolder("@var;" . $value[0] . ";", (new Request\SESSION("Parser." . $value[0], true))->Get());
+                $this->placeHolder("@var;" . $value[0] . ";", (new Server\SESSION("Parser." . $value[0], true))->Get());
                 break;
             case "@string":
                 echo $this->string;

@@ -3,7 +3,7 @@
 ## 資訊
 
 - 作者: CreamGod45
-- 版本: v1.3.0
+- 版本: v1.4.0
 - 類型: 內部測試版本(Alpha)
 
 # 幫助
@@ -27,7 +27,7 @@ use Utils\ConfigKeyField;
 $CGArray = new CGArray();
 $CGArray->Set(ConfigKeyField::Name->value, "CGPHP 網站");
 $CGArray->Set(ConfigKeyField::Description->value, "CGPHP");
-$CGArray->Set(ConfigKeyField::Version->value, "1.11.0");
+$CGArray->Set(ConfigKeyField::Version->value, "1.12.0");
 $CGArray->Set(ConfigKeyField::Auther->value, "creamgod45");
 
 return $CGArray;
@@ -52,7 +52,37 @@ case '路由名稱':
 接下來新增檔案在 `/router` 檔案名稱為你上面的{檔案名稱}提示字。
 
 接下來編輯 `/router/{檔案名稱}.php`
+新版本，可以直接把自己的素材直接寫入 BootBuilder 方法快速加載網頁素材
+```php
+<?php
+/**
+ * @var \Type\Array\CGArray $Config
+ * @var \Utils\Utils $Utils
+ * @var \Server\Request $Request
+ * @var \Server\ApplicationLayer $ApplicationLayer
+ * @var \Nette\Caching\Storages\FileStorage $storage
+ * @var \Nette\Caching\Cache $globalcache
+ * @var \Auth\UniqueVisiterID $uniqueVisiterID
+ * @var bool $routers
+ */
+if (@!$routers) exit();
 
+use Utils\BootBuilder;
+use Utils\csstype;
+
+$bb = new BootBuilder();
+$bb->setTitle("首頁");
+$bb->setContentFile("@Home.php");
+$bb->bootstrap();
+$bb->fontawesome();
+$bb->initialize_css();
+$bb->menu();
+$bb->setMenu(true);
+$bb->addAsset($bb->css("@Home.css",[], csstype::css));
+$bb->addAsset($bb->js("js/@Home.js",[]));
+$bb->builder($Config,$Utils,$Request,$ApplicationLayer,$storage,$globalcache,$uniqueVisiterID);
+```
+舊版本
 ```php
 <?php
 
@@ -113,10 +143,13 @@ include_once "templates/layout.php"; ?>
 接下來直接上傳FTP、XAMPP，預覽 http://127.0.0.1/路由名稱 就可以看到剛剛寫的頁面了。
 
 # 更新日誌
-
+- 20231117
+    - 大改版此更新請注意，所有檔案並且備份
+    - 更新 lib/Server
+    - 更新 lib/Auth
+    - 更新 lib/Utils
+    - 更新 lib/Shop
+    - 更新 lib/File
+    - 更新 lib/Type
 - 20230806
     - 更新 CGArray
-
-
-# TODO 
-

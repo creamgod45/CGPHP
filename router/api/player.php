@@ -1,11 +1,16 @@
 <?php
 
 /**
- * @var Utils\Utils $Utils
- * @var Server\Request $Request
- * @var Auth\MemberManager $MemberManager
- * @var Server\Request\ApplicationLayer $ApplicationLayer
- **/
+ * @var \Type\Array\CGArray $Config
+ * @var \Utils\Utils $Utils
+ * @var \Server\Request $Request
+ * @var \Server\ApplicationLayer $ApplicationLayer
+ * @var \Nette\Caching\Storages\FileStorage $storage
+ * @var \Nette\Caching\Cache $globalcache
+ * @var \Auth\UniqueVisiterID $uniqueVisiterID
+ * @var bool $routers
+ */
+if (@!$routers) exit();
 
 if ($Request->POST('a', true)->Get() &&
     $Request->CSRF("@player")->equal($Request->POST('b', true)->Get()) &&

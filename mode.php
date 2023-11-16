@@ -1,27 +1,28 @@
 <?php
-
 /**
- * @var Utils $Utils
- * @var Request $Request
+ * @var \Type\Array\CGArray $Config
+ * @var \Utils\Utils $Utils
+ * @var \Server\Request $Request
+ * @var \Server\ApplicationLayer $ApplicationLayer
+ * @var \Nette\Caching\Storages\FileStorage $storage
+ * @var \Nette\Caching\Cache $globalcache
+ * @var \Auth\UniqueVisiterID $uniqueVisiterID
  */
+
 require_once 'vendor/autoload.php';
 require_once 'autoload.php';
 
 use Auth\Member;
+use Auth\UserStorage;
 use Nette\Utils\FileSystem as fs;
-use Server\Request;
-use Utils\Utils;
 
 
 $mode = fs::read('mode');
 
-
-$member_unserialize = $Request->SESSION('member', true)->Get();
-if (!is_bool($member_unserialize)) {
-    $member = new Member();
-    $member->setArray($member_unserialize);
-
-    if ($mode !== 'enable' && $member->isAdministrator()) {
+$us = new UserStorage($storage, $uniqueVisiterID->getKey());
+if ($us->hasData("member")) {
+    $member = (new Member())->setArray($us->get("member"));
+    if($mode !== 'enable' && $member->isAdministrator()){
         echo "<h5>目前你已經繞過這個模式系統，因為你是管理員。</h5>";
         if ($mode === 'maintenance') {
             echo('<p>[維護模式]將在維護完成後開放網站系統</p>');
