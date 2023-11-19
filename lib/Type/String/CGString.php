@@ -15,6 +15,12 @@ class CGString implements CGStringInterface
         $this->string = $string;
     }
 
+    public function isJson(): bool
+    {
+        @json_decode($this->string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+
     public function isEmpty(): bool
     {
         return empty($this->string);

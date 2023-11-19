@@ -2,33 +2,42 @@
 
 namespace Server;
 
+use Auth\UniqueVisiterID;
+use Auth\UserStorage;
+use Nette\Caching\Storages\FileStorage;
+
 class CSRF
 {
     public string $key;
+    private $us;
 
     public function __construct($Key)
     {
         $this->key = $Key;
-        if (@empty($_SESSION["CSRF_" . $this->key])) {
-            $_SESSION["CSRF_" . $this->key] = md5(uniqid("CSRF_"));
+        $storage = new FileStorage('temp');
+        $this->us = new UserStorage($storage, (new UniqueVisiterID())->getKey());
+        if (!$this->us->hasData("CSRF_" . $this->key)) {
+            $this->us->save("CSRF_" . $this->key, md5(uniqid("CSRF_")));
         }
-        return $this;
     }
 
     public function getValue()
     {
-        return $_SESSION["CSRF_" . $this->key];
+        return $this->us->get("CSRF_" . $this->key);
     }
 
     public function equal($object): bool
     {
-        return $_SESSION["CSRF_" . $this->key] === $object;
+        return $this->us->get("CSRF_" . $this->key) === $object;
     }
 
+    public function  remove(){
+        $this->us->remove("CSRF_" . $this->key);
+    }
 
     public function reset(): CSRF
     {
-        $_SESSION["CSRF_" . $this->key] = md5(uniqid("CSRF_"));
+        $this->us->save("CSRF_" . $this->key, md5(uniqid("CSRF_")));
         return $this;
     }
 

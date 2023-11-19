@@ -98,22 +98,12 @@ class Request implements RequestInterface
      */
     public function CSRF(string $Key = "")
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            return false;
-        }
         return new CSRF($Key);
     }
 
     public function Timeout(string $Key = "")
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            return false;
-        }
         return new Timeout($Key);
-    }
-
-    public function Router(){
-        return new Router();
     }
 
 

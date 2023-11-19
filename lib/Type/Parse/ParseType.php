@@ -1,6 +1,6 @@
 <?php
 
-namespace Type\Parse\ParseType;
+namespace Type\Parse;
 
 require_once "ParseTypeInterface.php";
 

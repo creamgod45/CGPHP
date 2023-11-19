@@ -1,8 +1,21 @@
 <?php
 /**
+ * @var Type\Array\CGArray $Config
+ * @var Utils\Utils $Utils
+ * @var Server\Request $Request
+ * @var Server\ApplicationLayer $ApplicationLayer
+ * @var Nette\Caching\Storages\FileStorage $storage
+ * @var Nette\Caching\Cache $cache
+ * @var Auth\UniqueVisiterID $uniqueVisiterID
  * @var bool $routers
  */
-if (@!$routers) exit();?>
+if (@!$routers) exit();
+
+use Utils\ConfigKeyField;
+use Utils\Utils;
+use Type\Array\CGArray;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,14 +26,11 @@ if (@!$routers) exit();?>
      * @var CGArray $Config
      */
 
-    use Type\Array\CGArray;
-    use Utils\ConfigKeyField;
-
     function rand_commit($Config)
     {
         $random_number = rand(0, 100) / 100;
         if ($random_number < 0.7) {
-return "<!--".(new Utils\Utils())->Get_eng_randoom(rand(1,100))." 產生 by CGPHP Framework 專案名稱: ".$Config->Get(ConfigKeyField::Name->value)." 版本: ".$Config->Get(ConfigKeyField::Version->value)." 作者: ".$Config->Get(ConfigKeyField::Auther->value)." ".(new Utils\Utils())->Get_eng_randoom(rand(1,100))." --><!---->";
+return "<!-- 產生 ".(new Utils)->Get_eng_randoom(rand(0, 100))." by CGPHP Framework ".(new Utils)->Get_eng_randoom(rand(0, 100))." 專案名稱: ".$Config->Get(ConfigKeyField::Name->value)."".(new Utils)->Get_eng_randoom(rand(0, 100))." 版本: ".$Config->Get(ConfigKeyField::Version->value)." ".(new Utils)->Get_eng_randoom(rand(0, 100))." 作者: ".$Config->Get(ConfigKeyField::Auther->value)." ".(new Utils)->Get_eng_randoom(rand(0, 100))." ".(new Utils)->Get_eng_randoom(rand(0, 100))." -->";
         }
     }
 
