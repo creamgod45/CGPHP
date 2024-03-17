@@ -3,11 +3,14 @@
 namespace Utils;
 
 use Exception;
+use JetBrains\PhpStorm\Deprecated;
 use Nette\Utils\FileSystem;
 use Server;
 use Type\Array\CGArray;
 use Type\String\CGString;
-
+#[Deprecated(
+    reason: '套件已經不實用!! API過舊'
+)]
 class Parser
 {
     protected static array $MagicTagList = [];
@@ -24,19 +27,25 @@ class Parser
         $this->scanMagicTag();
         $this->ParseMagicTag();
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function init()
     {
 
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function scanMagicTag()
     {
         $CGString = new CGString($this->string);
         $CGArray = $CGString->whileIndexOf("@");
         self::$MagicTagList = $CGArray->toArray();
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function ParseMagicTag()
     {
         foreach ($this->getAllMagicTags() as $key => $index) {
@@ -58,7 +67,9 @@ class Parser
             }
         }
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      *
      * @return array
@@ -67,7 +78,9 @@ class Parser
     {
         return self::$MagicTagList;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      * @throws Exception
      */
@@ -101,7 +114,9 @@ class Parser
                 break;
         }
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      * 掃描到 @include 時將會自動加載元素
      * @param $method
@@ -111,62 +126,84 @@ class Parser
     {
         include_once PATH . $path;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function import(Parser $p)
     {
         $this->setvar($p->getvar());
         $this->setstring($p->getstring());
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function getvar()
     {
         return $this->var;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function setvar($arr)
     {
         $this->var[] = $arr;
         return $this;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function getstring()
     {
         return $this->string;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function setstring($str)
     {
         $this->string .= $str;
         return $this;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function placeHolder($placeholder, $value)
     {
         $this->string = str_replace($placeholder, $value, $this->string);
         return $this;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function getParserLinkList()
     {
         return $this->ParserLinkList;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function setParserLinkList($arr)
     {
         $this->ParserLinkList[] = $arr;
         return $this;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function showVar()
     {
         var_dump($this->var);
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function hasParserLinkList()
     {
         return !empty($this->ParserLinkList);
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      * @param int $index
      * @return false|Parser
@@ -181,12 +218,16 @@ class Parser
             return $var;
         }
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function getParserLinkListSize()
     {
         return count($this->ParserLinkList);
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     function debug()
     {
         return [$this->var, $this->string, $this->ParserLinkList];

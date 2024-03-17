@@ -5,33 +5,39 @@ namespace Auth;
 
 use Exception;
 use Nette\Utils\DateTime;
+use Permission\PermissionManager;
 
 class Member
 {
     protected int $id;
     protected string $uid;
-    protected string $username;
+
+    protected MemberType $type;
+    protected string $phone;
     protected string $password;
     protected string $email;
     protected bool $administrator;
     protected bool $enable;
     protected string $createdAt;
     protected DateTime $updatedAt;
+    protected PermissionManager $Permissions;
     private bool $isInitialized = false;
 
     public function __construct($list = [])
     {
         if (!empty($list)) {
-            [$this->id, $this->uid, $this->username, $this->password, $this->email, $this->administrator, $this->enable, $this->createdAt, $this->updatedAt] = $list;
+            [$this->id, $this->uid, $type, $this->phone, $this->password, $this->email, $this->enable, $this->administrator, $this->createdAt, $this->updatedAt] = $list;
             $this->isInitialized = true;
+            $this->type = MemberType::from($type);
         }
     }
 
-    public function override(Member $member): void
+    public function override(Member $member)
     {
         $this->id = $member->id;
         $this->uid = $member->uid;
-        $this->username = $member->username;
+        $this->type = $member->type;
+        $this->phone = $member->phone;
         $this->password = $member->password;
         $this->email = $member->email;
         $this->administrator = $member->administrator;
@@ -39,24 +45,62 @@ class Member
         $this->createdAt = $member->createdAt;
         $this->updatedAt = $member->updatedAt;
         $this->isInitialized = $member->isInitialized;
+        $this->Permissions = $member->Permissions;
+        return $this;
     }
 
-    /**
-     * @param array $data
-     * @return void
-     */
-    public function __unserialize(array $data): void
+    public function toArray()
     {
-        // TODO: Implement __unserialize() method.
+        return [
+            "id" => $this->id,
+            "uid" => $this->uid,
+            "type" => $this->type,
+            "phone" => $this->phone,
+            "password" => $this->password,
+            "email" => $this->email,
+            "administrator" => $this->administrator,
+            "enable" => $this->enable,
+            "createdAt" => $this->createdAt,
+            "updatedAt" => $this->updatedAt->getTimestamp(),
+            "isInitialized" => $this->isInitialized,
+            "Permissions" => $this->Permissions,
+        ];
     }
 
-
-    /**
-     * @return bool
-     */
-    public function isInitialized(): bool
+    public function setArray($array = [])
     {
-        return $this->isInitialized;
+        if (empty($array)) return $this;
+        $this->id = $array["id"];
+        $this->uid = $array["uid"];
+        $this->type = $array["type"];
+        $this->phone = $array["phone"];
+        $this->password = $array["password"];
+        $this->email = $array["email"];
+        $this->administrator = $array["administrator"];
+        $this->enable = $array["enable"];
+        $this->createdAt = $array["createdAt"];
+        try {
+            $this->updatedAt = DateTime::from($array["updatedAt"]);
+        } catch (Exception $e) {
+        }
+        $this->isInitialized = $array["isInitialized"];
+        $this->Permissions = $array["Permissions"];
+        return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize($this);
+    }
+
+    public function unserialize(string $data)
+    {
+        /**
+         * @var Member $object
+         */
+        $object = unserialize($data);
+        $this->override($object);
+        return $this;
     }
 
     /**
@@ -76,11 +120,74 @@ class Member
     }
 
     /**
+     * @return MemberType
+     */
+    public function getType(): MemberType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param MemberType $type
+     */
+    public function setType(MemberType $type): void
+    {
+        $this->type = $type;
+    }
+    /**
      * @return string
      */
-    public function getUsername(): string
+    public function getPhone(): string
     {
-        return $this->username;
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @param bool $administrator
+     */
+    public function setAdministrator(bool $administrator): void
+    {
+        $this->administrator = $administrator;
+    }
+
+    /**
+     * @param bool $enable
+     */
+    public function setEnable(bool $enable): void
+    {
+        $this->enable = $enable;
+    }
+
+    /**
+     * @param bool $isInitialized
+     */
+    public function setIsInitialized(bool $isInitialized): void
+    {
+        $this->isInitialized = $isInitialized;
     }
 
     /**
@@ -89,6 +196,14 @@ class Member
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 
     /**
@@ -115,74 +230,40 @@ class Member
         return $this->createdAt;
     }
 
-    /**
-     * @return string
-     */
-    public function getUpdatedAt(): string
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getEmail(): string
+    public function isInitialized(): bool
     {
-        return $this->email;
+        return $this->isInitialized;
     }
 
-    public function toArray()
+    /**
+     * @return PermissionManager
+     */
+    public function getPermissions(): PermissionManager
     {
-        return [
-            "id" => $this->id,
-            "uid" => $this->uid,
-            "username" => $this->username,
-            "password" => $this->password,
-            "email" => $this->email,
-            "administrator" => $this->administrator,
-            "enable" => $this->enable,
-            "createdAt" => $this->createdAt,
-            "updatedAt" => $this->updatedAt->getTimestamp(),
-            "isInitialized" => $this->isInitialized,
-        ];
+        return $this->Permissions;
     }
 
-    public function setArray($array = [])
+    /**
+     * @param PermissionManager $Permissions
+     */
+    public function setPermissions(PermissionManager $Permissions): void
     {
-        if(empty($array)) return $this;
-        $this->id = $array["id"];
-        $this->uid = $array["uid"];
-        $this->username = $array["username"];
-        $this->password = $array["password"];
-        $this->email = $array["email"];
-        $this->administrator = $array["administrator"];
-        $this->enable = $array["enable"];
-        $this->createdAt = $array["createdAt"];
-        try {
-            $this->updatedAt = DateTime::from($array["updatedAt"]);
-        } catch (Exception $e) {
-        }
-        $this->isInitialized = $array["isInitialized"];
+        $this->Permissions = $Permissions;
+    }
+
+    public function updateMemberData(): Member
+    {
+        $member = MemberManager::getMember(MemberNameField::UID, $this->getUid());
+        $this->override($member);
         return $this;
     }
-
-    /*public function toCGConverter(){
-        $prev_function = debug_backtrace()[1]['function'];
-        switch ($prev_function){
-            case "getId":
-            case "isAdministrator":
-            case "isEnable":
-                throw new RuntimeException('Unable to use converter!!');
-            case 'getUsername':
-                return new CGString($this->getUsername());
-            case 'getEmail':
-                return new CGString($this->getEmail());
-            case 'getPassword':
-                return new CGString($this->getPassword());
-            case 'getCreatedAt':
-                return new CGString($this->getCreatedAt());
-        }
-        return false;
-    }*/
 }
 

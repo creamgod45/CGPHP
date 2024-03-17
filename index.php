@@ -29,6 +29,15 @@ date_default_timezone_set('Asia/Taipei');
 header('X-Frame-Options: SAMEORIGIN');                          // Filter iframe only samedomain
 header("Content-Security-Policy: frame-ancestors 'self';");     // CSP Protect only self
 header('X-Content-Type-Options: nosniff');
+header("X-XSS-Protection: 1; mode=block");
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
+header("Referrer-Policy: strict-origin-when-cross-origin");
+header("Feature-Policy: camera 'none'; geolocation 'none'");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+header("X-Download-Options: noopen");
+header("X-Redirect-By: MyServer");
 
 // include_once module
 require_once 'vendor/autoload.php';
@@ -71,15 +80,16 @@ $routers = true;
 include_once "routers.php";
 
 /* @Debug @only_devloper_use */
-if (@!empty($Config)) $Utils->pinv($Config, 'debug');
+if (@!empty($Config)) $Utils->pinv($Config, 'Config');
 if (@!empty($debug)) $Utils->pinv($debug, 'debug');
 if (@!empty(router(null))) $Utils->pinv(router(null), 'router');
 if (@!empty($expire_message)) $Utils->pinv($expire_message, 'expire');
 if (@!empty(headers_list())) $Utils->pinv(headers_list(), 'HTTP Headers list');
-if (@!empty($Utils->session())) $Utils->pinv($Utils->session(), '_SESSION');
-if (@!empty($Utils->post())) $Utils->pinv($Utils->post(), '_POST');
-if (@!empty($Utils->get())) $Utils->pinv($Utils->get(), '_GET');
-if (@!empty($Utils->request())) $Utils->pinv($Utils->request(), '_REQUEST');
-if (@!empty($Utils->files())) $Utils->pinv($Utils->files(), '_FILES');
+if (@!empty($Request->SESSION())) $Utils->pinv($Request->SESSION(), '_SESSION');
+if (@!empty($Request->COOKIE())) $Utils->pinv($Request->COOKIE()->Get(), '_COOKIE');
+if (@!empty($Request->POST())) $Utils->pinv($Request->POST(), '_POST');
+if (@!empty($Request->GET())) $Utils->pinv($Request->GET(), '_GET');
+if (@!empty($Request->Request())) $Utils->pinv($Request->Request(), '_REQUEST');
+if (@!empty($Request->FILES())) $Utils->pinv($Request->FILES(), '_FILES');
 ob_end_flush();
 session_write_close();

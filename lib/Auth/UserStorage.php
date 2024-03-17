@@ -2,6 +2,7 @@
 
 namespace Auth;
 
+use Exception;
 use Nette\Caching\Cache;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
@@ -82,14 +83,17 @@ class UserStorage
         }
     }
 
-    /**
-     * @throws JsonException
-     */
     public function save($key, $value){
         $AES2 = new AES2($this->namespace);
+        $currentTimestamp = time();
+        $nextDayTimestamp = strtotime('tomorrow', $currentTimestamp);
         if(is_array($value)){
-            $c = $AES2->prepareWriteMode(Json::encode($value, Json::ESCAPE_UNICODE));
-            $this->cache->save($key, $c, [Cache::Expire => '10 minutes']);
+            try {
+                $c = $AES2->prepareWriteMode(Json::encode($value, Json::ESCAPE_UNICODE));
+            } catch (JsonException $e) {
+                echo ($e->getMessage());
+            }
+            $this->cache->save($key, $c, [Cache::Expire => $nextDayTimestamp]);
             try {
                 $keys = $this->getKeys();
                 $CGArray = new CGArray($keys);
@@ -103,7 +107,7 @@ class UserStorage
             }
         }elseif(is_object($value)){
             $c = $AES2->prepareWriteMode(serialize($value));
-            $this->cache->save($key, $c, [Cache::Expire => '10 minutes']);
+            $this->cache->save($key, $c, [Cache::Expire => $nextDayTimestamp]);
             try {
                 $keys = $this->getKeys();
                 $CGArray = new CGArray($keys);
@@ -117,7 +121,7 @@ class UserStorage
             }
         }else {
             $c = $AES2->prepareWriteMode($value);
-            $this->cache->save($key, $c, [Cache::Expire => '10 minutes']);
+            $this->cache->save($key, $c, [Cache::Expire => $nextDayTimestamp]);
             try {
                 $keys = $this->getKeys();
                 $CGArray = new CGArray($keys);
@@ -133,11 +137,15 @@ class UserStorage
     }
 
     /**
-     * @throws Throwable
-     * @throws JsonException
+     * @param $key
+     * @return false|mixed|string|null
      */
     public function get($key){
-        $value = $this->cache->load($key);
+        try {
+            $value = $this->cache->load($key);
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
         $AES2 = new AES2($this->namespace);
         if($value === null) {
             return false;
@@ -148,9 +156,22 @@ class UserStorage
         if($condition!==false && is_object($condition)){
             return $condition;
         }elseif((new CGString($o))->isJson()){
-            return Json::decode($o, Json::FORCE_ARRAY);
+            try {
+                return Json::decode($o, Json::FORCE_ARRAY);
+            } catch (JsonException $e) {
+                echo $e->getMessage();
+            }
         }else{
             return $o;
         }
+        return null;
+    }
+
+    public function getOrDefault($key, $default){
+        $var = $this->get($key);
+        if(empty($var))
+            return $default;
+        else
+            return $var;
     }
 }

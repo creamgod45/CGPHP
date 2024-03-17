@@ -229,8 +229,10 @@ class HTML
                                 $code .= $v . " ";
                         }
                         $code .= "\"";
-                    } else
-                        $code .= " " . $key . "=\"$value\"";
+                    } else{
+                        $code .= " "
+                            . $key
+                            . "=\"$value\"";}
                 }
         }
         // 一列式標籤

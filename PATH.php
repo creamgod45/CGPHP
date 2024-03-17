@@ -21,6 +21,20 @@ if (!function_exists('f1')) {
     }
 }
 
+function setWorkingDirectory($directory)
+{
+    if (is_dir($directory)) {
+        // 尝试改变当前工作目录
+        if (chdir($directory)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return null;
+    }
+}
+
 if (f1(true, true)[0] === 'https://') {
     if (!defined('PATH')) {
         define('PATH', '/home/vulsdril/chat.zeitfrei.tw');

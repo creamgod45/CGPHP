@@ -11,7 +11,7 @@ class IPBan
     public function __construct()
     {
         $this->Utils = new utils();
-        $this->db = new Connection('mysql:host=127.0.0.1;dbname=', '', '');
+        $this->db = new Connection('mysql:host=127.0.0.1;dbname=vvrzmwkq_home', 'vvrzmwkq_home', 'KFw2)rA_p*6g');
     }
 
     /* visitorID

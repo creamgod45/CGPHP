@@ -6,8 +6,6 @@ use Nette\Utils\FileSystem as FS;
 use Nette\Utils\Finder;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 
 // filename time type
 class SearchFile

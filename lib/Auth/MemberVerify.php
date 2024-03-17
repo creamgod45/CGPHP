@@ -4,7 +4,7 @@ namespace Auth;
 
 trait MemberVerify
 {
-    public function login(Member $member, $password): bool
+    public static function login(Member $member, $password): bool
     {
         if ($member->isInitialized()) {
             $password1 = $member->getPassword();

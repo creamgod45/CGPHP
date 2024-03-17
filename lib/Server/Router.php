@@ -4,19 +4,29 @@ namespace Server;
 
 class Router
 {
-    public function __construct()
+    /**
+     * @var null|int $layer
+     */
+    private ?int $layer = null;
+
+    public function __construct($layer = null)
     {
+        $this->layer = $layer;
     }
 
-    public function getLayer($layer){
+    /**
+     * @return string|array|null
+     */
+    public function getLayer()
+    {
         $url = $_SERVER['REQUEST_URI'];
         $REQUEST = explode('/', $url);
-        if ($layer === null) {
+        if ($this->layer === null) {
             return $REQUEST;
         }
-        if (empty($REQUEST[$layer])) {
-            return '';
+        if (empty($REQUEST[$this->layer])) {
+            return null;
         }
-        return $REQUEST[$layer];
+        return $REQUEST[$this->layer];
     }
 }

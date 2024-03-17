@@ -27,6 +27,12 @@ class POST
         return false;
     }
 
+    public function isEmpty(): bool
+    {
+        @$var = $this->Get();
+        return empty($var);
+    }
+
     public function Set($value = ''): void
     {
         $_POST[$this->key] = $value;

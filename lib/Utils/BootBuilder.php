@@ -2,6 +2,7 @@
 
 namespace Utils;
 
+use Auth\Member;
 use Type\Array\CGArray;
 
 class BootBuilder
@@ -27,9 +28,48 @@ class BootBuilder
      */
     private string $script = 'const $jq = jQuery.noConflict();';
     /**
-     * @var bool
+     * @var mixed
      */
-    private bool $menu = true;
+    private $menu = true;
+
+    private Member $member;
+
+    /**
+     * @return Member
+     */
+    public function getMember()
+    {
+        return $this->member;
+    }
+
+    /**
+     * @param Member $member
+     */
+    public function setMember(Member $member): void
+    {
+        $this->member = $member;
+    }
+
+    /**
+     * @param callable $if{a: bool}
+     * @param string ...$str
+     * @return false|void
+     */
+    public function hasPermission(callable $if,$params,string ...$str){
+        if($this->member === false) {
+            $if(null, $params);
+            return false;
+        }
+        if($this->member === null) {
+            $if(null, $params);
+            return false;
+        }
+        if($this->member->getPermissions()->hasPermissions2(...$str)){
+            $if(true, $params);
+        }else{
+            $if(false, $params);
+        }
+    }
 
     /**
      * @return string
@@ -120,9 +160,9 @@ class BootBuilder
     }
 
     /**
-     * @param bool $menu
+     * @param mixed $menu
      */
-    public function setMenu(bool $menu): void
+    public function setMenu($menu): void
     {
         $this->menu = $menu;
     }
@@ -141,6 +181,14 @@ class BootBuilder
             ->attr("href", "https://fonts.gstatic.com")
             ->attr("rel", "preconnect")
             ->attr("crossorigin", "")
+            ->build());
+    }
+
+    public function tailwind(){
+        $this->addAsset((new Htmlv2("script"))
+            ->newLine(true)
+            ->close(true)
+            ->attr("src", "https://cdn.tailwindcss.com")
             ->build());
     }
 
@@ -223,8 +271,9 @@ class BootBuilder
         $this->addAsset($this->js("js/loadimg.js", []));
     }
 
-    public function lightbox_js()
+    public function lightbox()
     {
+        $this->addAsset($this->css("lightbox.min.css", [], csstype::css));
         $this->addAsset($this->js("js/lightbox.min.js", []));
     }
 
@@ -235,23 +284,29 @@ class BootBuilder
 
     public function bootstrap()
     {
-        $this->addAsset($this->js("https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js", []));
+        $this->addAsset(
+            (new Htmlv2("script"))
+                ->close(true)
+                ->newLine(true)
+                ->attr("src", "https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js")
+                ->build()
+        );
         $this->addAsset($this->css("bootstrap.min.css", [], csstype::css));
         $this->addAsset($this->js("js/bootstrap.min.js", []));
     }
 
     public function initialize_css()
     {
-        $this->addAsset($this->css("initialize.css", [], csstype::css));
+        $this->addAsset($this->css("initialize.css", [], csstype::scss));
     }
 
     public function corejs()
     {
-        $this->addAsset($this->js("js/core.js", []));
+        $this->addAsset($this->js("js/core.min.js", []));
     }
 
     public function menu(){
-        $this->addAsset($this->css("menu.css", [], csstype::scss));
+        $this->addAsset($this->css("menu.o.css", [], csstype::scss));
     }
 
     /**

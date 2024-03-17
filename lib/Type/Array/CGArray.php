@@ -60,6 +60,45 @@ class CGArray implements CGArrayInterface
         return $this->array[$this->Size() - 1];
     }
 
+    public function getLastObject(){
+        $k = 0;
+        foreach ($this->array as $i=> $item) {
+            if(count($this->array) === $k){
+                return $item;
+            }
+            $k++;
+        }
+        return null;
+    }
+
+    public function splitLastObjectFromNumber($number=1){
+        $k = 0;
+        $count = $this->count();
+        foreach ($this->array as $key => $item) {
+            if($k>=$count-$number){
+                $this->Delete($key);
+            }
+            $k++;
+        }
+        return $this;
+    }
+
+    public function count(): int
+    {
+        return count($this->array);
+    }
+
+    public function splitFirstObjectFromNumber($number=1){
+        $k = 0;
+        foreach ($this->array as $key => $item) {
+            if($k<=$number){
+                $this->Delete($key);
+            }
+            $k++;
+        }
+        return $this;
+    }
+
     public function Size(): int
     {
         // TODO: Implement size() method.
@@ -69,6 +108,13 @@ class CGArray implements CGArrayInterface
     public function getFrist()
     {
         return $this->array[0];
+    }
+
+    public function getFirstObject(){
+        foreach ($this->array as $item) {
+            return $item;
+        }
+        return null;
     }
 
     public function Add($Mixed): void
@@ -94,6 +140,7 @@ class CGArray implements CGArrayInterface
             if(empty($this->array[$Key])) return;
             unset($this->array[$Key]);
         }
+        return $this;
     }
 
     public function Remove($Index): void
@@ -131,6 +178,12 @@ class CGArray implements CGArrayInterface
     {
         // TODO: Implement get() method.
         return $this->array[$Index];
+    }
+    public function hasKey($key){
+        if(@empty($this->Get($key))){
+            return false;
+        }
+        return true;
     }
 
     public function Contains($Mixed): bool

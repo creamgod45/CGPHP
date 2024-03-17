@@ -3,22 +3,74 @@
 namespace Permission;
 
 use Type\Array\CGArray;
-use Utils\Utils;
+use Type\String\CGString;
 
 class PermissionManager
 {
-    public CGArray $permissions;
+
+    /**
+     * @var Permission[] $permissions
+     */
+    public array $permissions = [];
 
     public function __construct()
     {
-        $this->permissions = new CGArray();
+
     }
 
+    /**
+     * Auth\MemberType\AdministratorPermission
+     *  permissions: array
+     *      0 => Permission\Permission
+     *           page: 'profile'
+     *           name: 'member_page_profile_permissions'
+     *           description: '會員個人資料操作權限組別'
+     *           adminBydefault: false
+     *           subPermission: array
+     *                          0 => Permission\Permission
+     *                               page: 'profile'
+     *                               name: 'member_page_profile_permissions_view'
+     *                               description: '觀看頁面權限'
+     *                               adminBydefault: false
+     *                               subPermission: array
+     *                                              0 => Permission\Permission
+     *                                                   page: 'profile'
+     *                                                   name: 'member_page_profile_permissions_view_page_1'
+     *                                                   description: '玩家資料'
+     *                                                   adminBydefault: false
+     *                                                   subPermission: array (0)
+     *                                              1 => Permission\Permission
+     *                                              2 => Permission\Permission
+     *                                              3 => Permission\Permission
+     */
 
-    public function PermissionTree(Permission $permission)
+
+    public function PermissTreeParser(Permission $permission){
+        $arr = [];
+        $permissions = [];
+        $this->PermissionTree($permission, $permissions);
+        /**
+         * @var Permission[] $permissions
+         */
+        foreach ($permissions as $p) {
+            $p->setSubPermission([]);
+            $arr [$p->getName()] = $p;
+        }
+        return $arr;
+    }
+
+    /**
+     * @param Permission $permission
+     * @param Permission[] $refArray
+     * @return Permission
+     */
+    public function PermissionTree(Permission $permission,array &$refArray=[])
     {
+        $tarr = [];
+        $tarr [$permission->getName()] = $permission;
         $permissions = $permission->getSubPermission();
         foreach ($permissions as $k => $p) {
+            //(new Utils())->v($p);
             if (empty($p->getSubPermission())) {
                 //無子
                 $p->setName($permission->getName() . "_" . $p->getName());
@@ -29,16 +81,22 @@ class PermissionManager
                 if (empty($p->isAdminBydefault()))
                     $p->setPage($permission->isAdminBydefault());
                 $permissions[$k] = $p;
+                $tarr [] = $p;
             } else {
                 //有子
-                self::PermissionRecursion($permission, $permissions[$k]);
+                $r = self::PermissionTreeRecursion($permission, $permissions[$k]);
+                foreach ($r as $a) {
+                    $tarr [] = $a;
+                }
             }
         }
+        $refArray = $tarr;
         return $permission;
     }
 
-    public function PermissionRecursion(Permission &$parent, Permission &$self): void
+    public function PermissionTreeRecursion(Permission &$parent, Permission &$self)
     {
+        $tarr = [];
         $self->setName($parent->getName() . "_" . $self->getName());
         if (empty($self->getPage()))
             $self->setPage($parent->getPage());
@@ -48,63 +106,100 @@ class PermissionManager
             $self->setAdminBydefault($parent->isAdminBydefault());
         if (!empty($self->getSubPermission())) {
             foreach ($self->getSubPermission() as $key => $item) {
-                self::PermissionRecursion($self, $self->subPermission[$key]);
+                //(new Utils())->v($item);
+                $r = self::PermissionTreeRecursion($self, $self->subPermission[$key]);
+                foreach ($r as $a) {
+                    $tarr [] = $a;
+                }
             }
         }
+        $tarr [] = $self;
+        return $tarr;
     }
 
     public function addPermission(Permission $permission)
     {
-        $this->permissions->Add($permission);
+        $this->permissions [$permission->getName()] = $permission;
     }
 
-    public function removePermission(Permission $permission)
+    public function addPermissions(array $ps){
+        foreach ($ps as $key=> $permission) {
+             $this->permissions[$key]=$permission;
+        }
+    }
+
+    public function removePermission(string $p)
     {
+        if($this->hasPermission($p)){
+            $tarr = [];
+            foreach ($this->permissions as $key => $permission) {
+                $CGString = new CGString($permission->getName());
+                if(!$CGString->StartWith($p)){
+                    $tarr [$key] = $permission;
+                }
+            }
+            $this->permissions = $tarr;
+        }
+    }
+
+    public function removePermissions(string ... $permissions): void
+    {
+        foreach ($permissions as $item) {
+            $this->removePermission($item);
+        }
+    }
+    public function removePermissionsArray(array $permissions): void
+    {
+        foreach ($permissions as $item) {
+            $this->removePermission($item);
+        }
     }
 
 
     public function hasPermission(string $permission)
     {
-        /**
-         * @var Permission[] $plist
-         */
-        $plist = $this->permissions->toArray();
-        foreach ($plist as $p1) {
-            //(new Utils())->v($p1->getName());
-            if( $p1->getName() === $permission){
-                return true;
-            }elseif($this->checkPermissionRecursively($p1, $permission) !== null){
-                return true;
-            }
+        $CGArray = new CGArray($this->permissions);
+        if($CGArray->hasKey("admin")){
+            return true;
+        }
+        if($CGArray->hasKey($permission)){
+            return true;
         }
         return false;
     }
 
     /**
-     * @param Permission $permission
-     * @param string $permissionName
-     * @return boolean
+     * @param array|CGArray $arr
+     * @return bool
      */
-    private function checkPermissionRecursively(Permission $permission, string $permissionName)
+    public function hasPermissions($arr)
     {
-        if($permission->getName() === $permissionName) return true;
-        foreach ($permission->getSubPermission() as $item) {
-            //(new Utils())->v($item->getName());
-            if($item->getName()===$permissionName){
-                return true;
-            }
-            $a = $this->checkPermissionRecursively($item, $permissionName);
-            if($a) return $a;
+        if ($arr instanceof CGArray) {
+            $arr = $arr->toArray();
         }
-        return null;
+        $r = true;
+        foreach ($arr as $item) {
+            $r = $r && $this->hasPermission($item);
+        }
+        return $r;
     }
 
-    public function getPermissions($toArray=false)
+    /**
+     * @param string ...$str
+     * @return bool
+     */
+    public function hasPermissions2(string ...$str){
+        $r = true;
+        foreach ($str as $item) {
+            $r = $r && $this->hasPermission($item);
+        }
+        return $r;
+    }
+
+    public function getPermissions()
     {
-        if($toArray)
-            return $this->permissions->toArray();
-        else
-            return $this->permissions;
+
+        return $this->permissions;
     }
 
     public function getPermission(string $Permission)

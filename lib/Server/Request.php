@@ -2,6 +2,8 @@
 
 namespace Server;
 
+use Server\CSRF\CSRFNameField;
+
 require_once 'RequestInterface.php';
 require_once 'GET.php';
 require_once 'POST.php';
@@ -13,6 +15,10 @@ require_once "HEADER.php";
 
 class Request implements RequestInterface
 {
+    public function Router(int $layer): Router
+    {
+        return new Router($layer);
+    }
 
     public function Request(string $key = '', bool $ignore_key_missing = false): Request_internal
     {
@@ -93,7 +99,7 @@ class Request implements RequestInterface
     }
 
     /**
-     * @param string $Key
+     * @param string|CSRFNameField $Key
      * @return bool|CSRF
      */
     public function CSRF(string $Key = "")
@@ -101,9 +107,9 @@ class Request implements RequestInterface
         return new CSRF($Key);
     }
 
-    public function Timeout(string $Key = "")
+    public function Timeout(string $Key = "",int $expired = 10)
     {
-        return new Timeout($Key);
+        return new Timeout($Key, $expired);
     }
 
 

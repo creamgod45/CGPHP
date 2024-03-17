@@ -57,6 +57,11 @@ class CGString implements CGStringInterface
         return new CGString(strtoupper($this->string));
     }
 
+    public function StartWith($prefix): bool
+    {
+        return str_starts_with($this->string, $prefix);
+    }
+
     public function IndexOf(string $Sting = ''): bool|int
     {
         return strpos($this->string, $Sting);

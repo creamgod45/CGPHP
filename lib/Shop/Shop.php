@@ -3,40 +3,42 @@
 namespace Shop;
 
 use Nette\Utils\DateTime;
-use Utils\Utils;
+use Type\Array\CGArray;
 
 class Shop
 {
-    public string $ShopID = "";
-    public string $name = "預設";
-    public string $description = "無";
-    public ShopItemManager $items;
-    public string $owner = "系統";
-    public ShopInvoiceList $invoiceList;
-    public bool $enable = true;
-    public int $creatAt;
-    public DateTime $updateAt;
+    private int $ID;
+    private string $ShopID;
+    private string $name;
+    private string $enable;
+    private bool $opening;
+    private string $address;
+
+    private string $phone;
+    /**
+     * 建構後建立
+     * @var Statistics
+     */
+    private Statistics $turnover;
+    private int $creatAt;
+    /**
+     * 建構後建立
+     * @var DateTime
+     */
+    private DateTime $updateAt;
+    private bool $init;
+
+    public function __construct()
+    {
+        $this->init = false;
+    }
 
     /**
-     * @param string $ShopID
-     * @param string $name
-     * @param string $description
-     * @param ShopItemManager $items
-     * @param string $owner
-     * @param ShopInvoiceList $invoiceList
-     * @param bool $enable
-     * @param int $creatAt
-     * @param DateTime $updateAt
+     * @return int
      */
-    public function __construct(string $ShopID, string $name, string $description, string $owner, bool $enable, int $creatAt, DateTime $updateAt)
+    public function getID(): int
     {
-        $this->ShopID = $ShopID;
-        $this->name = $name;
-        $this->description = $description;
-        $this->owner = $owner;
-        $this->enable = $enable;
-        $this->creatAt = $creatAt;
-        $this->updateAt = $updateAt;
+        return $this->ID;
     }
 
     /**
@@ -48,11 +50,106 @@ class Shop
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isEnable(): bool
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnable(): string
     {
         return $this->enable;
+    }
+
+    /**
+     * @param string $enable
+     */
+    public function setEnable(string $enable): void
+    {
+        $this->enable = $enable;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpening(): bool
+    {
+        return $this->opening;
+    }
+
+    public function formatOpening($trueTextPrefix=null, $falseTextPrefix=null){
+        if($this->opening){
+            return $trueTextPrefix."開店中";
+        }
+        return $falseTextPrefix."關店";
+    }
+
+    /**
+     * @param bool $opening
+     */
+    public function setOpening(bool $opening): void
+    {
+        $this->opening = $opening;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     */
+    public function setAddress(string $address): void
+    {
+        $this->address = $address;
+    } // 開店中
+
+    /**
+     * @return string
+     */
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return Statistics
+     */
+    public function getTurnover(): Statistics
+    {
+        return $this->turnover;
+    }
+
+    /**
+     * @param Statistics $turnover
+     */
+    public function setTurnover(Statistics $turnover): void
+    {
+        $this->turnover = $turnover;
     }
 
     /**
@@ -71,65 +168,98 @@ class Shop
         return $this->updateAt;
     }
 
+    public function hasInit(): bool
+    {
+        return $this->init;
+    }
+
 
     /**
-     * @return string
+     * @param int $ID
+     * @param string $ShopID
+     * @param string $name
+     * @param string $enable
+     * @param bool $opening
+     * @param string $address
+     * @param string $phone
+     * @param Statistics $turnover
+     * @param int $creatAt
+     * @param DateTime $updateAt
      */
-    public function getName(): string
+    public function setShop(int $ID, string $ShopID, string $name, string $enable, bool $opening, string $address, string $phone, Statistics $turnover, int $creatAt, DateTime $updateAt)
     {
-        return $this->name;
+        $this->ID = $ID;
+        $this->ShopID = $ShopID;
+        $this->name = $name;
+        $this->enable = $enable;
+        $this->opening = $opening;
+        $this->address = $address;
+        $this->phone = $phone;
+        $this->turnover = $turnover;
+        $this->creatAt = $creatAt;
+        $this->updateAt = $updateAt;
+        $this->init = true;
+        return $this;
+    }
+
+
+    /**
+     * @param int $ID
+     * @param string $ShopID
+     * @param string $name
+     * @param string $enable
+     * @param bool $opening
+     * @param string $address
+     * @param string $phone
+     * @param int $creatAt
+     * @param DateTime $updateAt
+     */
+    public function setShop2(int $ID, string $ShopID, string $name, string $enable, bool $opening, string $address, string $phone, int $creatAt, DateTime $updateAt)
+    {
+        $this->ID = $ID;
+        $this->ShopID = $ShopID;
+        $this->name = $name;
+        $this->enable = $enable;
+        $this->opening = $opening;
+        $this->address = $address;
+        $this->phone = $phone;
+        $this->creatAt = $creatAt;
+        $this->updateAt = $updateAt;
+        $this->init = true;
+        return $this;
+    }
+
+    public function __serialize()
+    {
+        return serialize($this);
     }
 
     /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @return ShopItemManager
-     */
-    public function getItems(): ShopItemManager
-    {
-        return $this->items;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOwner(): string
-    {
-        return $this->owner;
-    }
-
-    /**
-     * @return ShopInvoiceList
-     */
-    public function getInvoiceList(): ShopInvoiceList
-    {
-        return $this->invoiceList;
-    }
-
-    /**
-     * @param Shop $shop
+     * @param $data
      * @return void
      */
-    public function overrideClass(Shop $shop, bool $FullOverride = true): void
+    public function __unserialize($data): void
     {
-        if ($FullOverride) {
-            $this->ShopID = $shop->ShopID;
-        } else {
-            $this->ShopID = md5((new Utils())->uid());
-        }
-        $this->name = $shop->name;
-        $this->description = $shop->description;
-        $this->items = $shop->items;
-        $this->owner = $shop->owner;
-        $this->invoiceList = $shop->invoiceList;
-        $this->enable = $shop->enable;
-        $this->creatAt = $shop->creatAt;
-        $this->updateAt = $shop->updateAt;
+        /**
+         * @var Shop $d
+         */
+        $d = unserialize($data);
+        $this->setShop1($d);
+    }
+
+    public function setShop1(Shop $s)
+    {
+        $this->ID = $s->ID;
+        $this->ShopID = $s->ShopID;
+        $this->name = $s->name;
+        $this->enable = $s->enable;
+        $this->opening = $s->opening;
+        $this->address = $s->address;
+        $this->phone = $s->phone;
+        $this->turnover = $s->turnover;
+        $this->creatAt = $s->creatAt;
+        $this->updateAt = $s->updateAt;
+        $this->init = $s->init;
+        return $this;
     }
 }

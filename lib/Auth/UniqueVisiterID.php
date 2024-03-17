@@ -7,7 +7,7 @@ use Utils\Utils;
 
 class UniqueVisiterID
 {
-    private string $key = "";
+    private $key = "";
 
     public function __construct()
     {

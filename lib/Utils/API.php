@@ -2,9 +2,22 @@
 
 namespace Utils;
 
-use Utils\AES;
-use Utils\Utils;
+date_default_timezone_set("Asia/Taipei");
 
+if (f1(true, true)[0] === "https://") {
+    include_once "/home/vulsdril/chat.zeitfrei.tw/PATH.php";
+} else {
+    include_once "C:/xampp/htdocs/PATH.php";
+}
+
+require_once "utils.php";
+require_once "AES.php";
+
+use JetBrains\PhpStorm\Deprecated;
+
+#[Deprecated(
+    reason: '套件已經不實用!! API過舊'
+)]
 class API
 {
     public $UUID;
@@ -22,7 +35,10 @@ class API
         $this->APIINFO = $APIINFO;
     }
 
-    public function json_build_response($code, $result, $nocode = false)
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
+    public function json_build_response($code, $result, $nocode = false): bool|string
     {
         $this->setHttpHeaders("application/json", $code);
         if ($nocode) {
@@ -46,6 +62,9 @@ class API
         return json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function setHttpHeaders($contentType, $statusCode): void
     {
 
@@ -55,6 +74,9 @@ class API
         header("Content-Type:" . $contentType);
     }
 
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function getHttpStatusMessage($statusCode)
     {
         if ($statusCode === null) return;
@@ -104,6 +126,9 @@ class API
         return @($httpStatus[$statusCode]) ?: $httpStatus[500];
     }
 
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      * @return mixed|string
      */
@@ -112,6 +137,9 @@ class API
         return $this->APIName;
     }
 
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      * @param mixed|string $APIName
      */
@@ -120,6 +148,9 @@ class API
         $this->APIName = $APIName;
     }
 
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      * @return mixed
      */
@@ -128,6 +159,9 @@ class API
         return $this->APIINFO;
     }
 
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      * @param mixed $APIINFO
      */
@@ -136,6 +170,9 @@ class API
         $this->APIINFO = $APIINFO;
     }
 
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function isExpiredAPIRequest($apikey, $result = false)
     {
         $sql = "SELECT `expired_time`,`OutData` FROM `zfcr_api`";
@@ -155,6 +192,9 @@ class API
         return false;
     }
 
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function getAPIRequest($access_token, $option = "*")
     {
         $sql = "SELECT $option FROM `zfcr_api`";
@@ -166,6 +206,9 @@ class API
         return $r;
     }
 
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function addAPIRequest($input = [])
     {
         list($a, $b, $c, $d, $e, $f) = $input;

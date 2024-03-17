@@ -2,11 +2,19 @@
 
 namespace Utils;
 
-use http\Exception\RuntimeException;
+use RuntimeException;
 
 /**
- * Plugins module
- * @package lib
+ *
+ * Example usage:
+ * $r = Utils::timeStamp(1709049600);
+ * var_dump($r);
+ *
+ * @access public
+ * @version 3.0.0
+ * @author creamgod45 <fuyin1054@gmail.com>
+ * @package Utils
+ * @since 8.1
  */
 class Utils
 {
@@ -17,7 +25,7 @@ class Utils
      * @param String $format
      * @return false|string
      */
-    public function timestamp($time = null, string $format = 'Y-m-d H:i:s')
+    public static function timeStamp($time = null, string $format = 'Y-m-d H:i:s'): bool|string
     {
         if (empty($time)) {
             $time = time();
@@ -26,7 +34,16 @@ class Utils
         return date($format, $time);
     }
 
-    public function timestamp_string($time = null, string $format = 'Y-m-d H:i:s')
+    /**
+     * 取得有格式的時間字串(如果得到-1時會回傳不限時間)
+     * etc
+     * return (-1)=> 不限時間
+     *        (1709049600)=> 2024-02-28 0:0:0
+     * @param $time
+     * @param string $format
+     * @return string
+     */
+    public static function timeStamp2($time = null, string $format = 'Y-m-d H:i:s'): string
     {
         if (empty($time)) {
             $time = time();
@@ -39,43 +56,12 @@ class Utils
     }
 
     /**
-     * SESSION 方法
      *
-     * @param String $string
-     * @return Mixed
+     * @param $data
+     * @param $default
+     * @return mixed|null
      */
-    public function session(string $string = "")
-    {
-        if (@$string === "") {
-            return $_SESSION;
-        }
-
-        return $_SESSION[$string];
-    }
-
-    /**
-     * Set $classlist container
-     *
-     * @param array $classlist
-     */
-    public function setClasslist(array $classlist)
-    {
-        $this->set_session(["ClassList", $classlist]);
-    }
-
-    /**
-     * 設定 SESSION 方法
-     *
-     * @param Array $array
-     * @return Boolean
-     */
-    public function set_session(array $array): bool
-    {
-        $_SESSION[$array[0]] = $array[1];
-        return true;
-    }
-
-    public function default($data, $default = null)
+    public static function default($data, $default = null)
     {
         if (@empty($data) || $data === null) {
             return $default;
@@ -90,7 +76,7 @@ class Utils
      * @param Mixed $mixed
      * @return Boolean
      */
-    public function v($mixed): bool
+    public static function v($mixed): bool
     {
         dump($mixed);
         return true;
@@ -101,262 +87,9 @@ class Utils
      * @param string $filename
      * @return false|int
      */
-    public function filecode(string $filename)
+    public static function filecode(string $filename)
     {
         return filemtime($filename);
-    }
-
-    /**
-     * 字串過濾器
-     * @param $method
-     * @param $value
-     * @return bool|string|string[]
-     */
-    public function filter($method, $value)
-    {
-        switch ($method) {
-            case 'int':
-                $value = intval($value);
-                if ($value === 0) return true;
-                if (filter_var($value, FILTER_VALIDATE_INT)) {
-                    return true;
-                }
-            case 'token':
-                return filter_var($value, FILTER_SANITIZE_STRING);
-            case 'UUID':
-                if (preg_match("/[.0-9a-f]+/i", $value)) {
-                    return true;
-                }
-
-                return false;
-            case 'chat':
-                $text = str_replace(array("<script>", "</script>", "<style>", "</style>", "<html>", "</html>", "<body>", "</body>", "<?=", "?>", "</"), '', $value);
-                $text = htmlspecialchars($text);
-                $text = htmlentities($text, ENT_QUOTES | ENT_IGNORE, "UTF-8");
-                $text = preg_replace("~(?:[\p{M}])([\p{M}])+?~uis", "", $text);
-                return $text;
-            case 'email':
-                if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                    return true;
-                }
-
-                return false;
-            case 'ChatRoomID':
-                /**
-                 * 英文開頭
-                 * a~z 0~9 _^#$@!%&*-
-                 * 1~20 位數
-                 */
-                // url:https://stackoverflow.com/questions/18562664/regular-expression-for-username-with-a-z0-9-3-20
-                if (preg_match("/^[a-z][a-z0-9_^#$@!%&*-]{1,20}$/i", $value)) {
-                    return true;
-                }
-
-                return false;
-            case 'username':
-                /**
-                 * 英文開頭
-                 * a~z 0~9 _^#$@!%&*-
-                 * 20~255 位數
-                 */
-                // url:https://stackoverflow.com/questions/18562664/regular-expression-for-username-with-a-z0-9-3-20
-                if (preg_match("/^[a-z][a-z0-9_^#$@!%&*-]{1,255}$/i", $value)) {
-                    return true;
-                }
-
-                return false;
-            case 'nickname':
-                /**
-                 * 大於等於 2 個字 到 20 個字
-                 * 中文 英文 數字
-                 */
-                if (preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]{2,20}+$/u', $value)) {
-                    return true;
-                }
-                $r = [];
-                $num = 0;
-                $r [] = strpos($value, "來福");
-                $r [] = strpos($value, "系統");
-                $r [] = strpos($value, "ray");
-                $r [] = strpos($value, "管理員");
-                $r [] = strpos($value, "Ray");
-                $r [] = strpos($value, "𝗭𝗲𝗶𝘁𝗙𝗿𝗲𝗶");
-                $r [] = strpos($value, "版主");
-                $r [] = strpos($value, "版主");
-                foreach ($r as $item) {
-                    if (is_numeric($item)) {
-                        $num++;
-                    }
-                }
-                if ($num > 0) return false;
-                return true;
-                break;
-            case 'password':
-                /**
-                 * a~z 0~9 _^#$@!%&*-
-                 * 8~255 位數
-                 */
-                if (preg_match("/^[a-z0-9_^#$@!%&*-]{8,255}$/i", $value)) {
-                    return true;
-                }
-
-                return false;
-            case 'discord_id':
-                if (filter_var($value, FILTER_VALIDATE_INT)) {
-                    return true;
-                }
-
-                return false;
-            case 'url':
-                if (filter_var($value, FILTER_VALIDATE_URL)) {
-                    return true;
-                }
-
-                return false;
-            case 'avatar':
-                $num = 0;
-                $arr = explode("/", $value);
-
-                if ($arr[2] === "i.imgur.com") {
-                    $num++;
-                } else if ($arr[2] === "cdn.discordapp.com" && $arr[3] === "avatars") {
-                    $num++;
-                }
-
-                if (filter_var($value, FILTER_VALIDATE_URL)) {
-                    $num++;
-                }
-                if ($num === 2) return true;
-                return false;
-            case 'ip':
-                if (filter_var($value, FILTER_VALIDATE_IP)) {
-                    return true;
-                }
-
-                return false;
-            case 'boolstring':
-                if ($value === "true" || $value === "false") return true;
-                return false;
-                break;
-            case 'privacy':
-                if ($value === "public" || $value === "private" || $value === "protected") return true;
-                return false;
-                break;
-            default:
-                return false;
-        }
-    }
-
-    public function rmheader()
-    {
-        header_remove("connection");
-        header_remove("content-length");
-        header_remove("content-type");
-        header_remove("date");
-        header_remove("keep-alive");
-        header_remove("server");
-        header_remove("x-powered-by");
-    }
-
-    /**
-     * 陣列轉字串
-     * @param Array $array
-     * @return String
-     *
-     * input:
-     * {
-     *         [0] => [
-     *             [0]=>0,
-     *             [1]=>1
-     *         ],
-     *         [1] => [
-     *             [0]=>2,
-     *             [1]=>3,
-     *             [2]=>4
-     *         ]
-     * }
-     *
-     * output:
-     * /0:1/2:3:4
-     *
-     */
-    public function array_decode(array $array): string
-    {
-        $string = "";
-        for ($i = 0; $i <= count($array) - 1; $i++) {
-            if ($i !== 0) {
-                $string .= '/';
-            }
-            for ($y = 0; $y <= count($array[$i]) - 1; $y++) {
-                if ($y === count($array[$i]) - 1) {
-                    $string .= $array[$i][$y];
-                } else {
-                    $string .= $array[$i][$y] . ':';
-                }
-            }
-        }
-        return $string;
-    }
-
-    /**
-     * 字串轉陣列
-     *
-     * input:
-     * /0:1/2:3:4
-     *
-     * output:
-     * {
-     *         [0] => [
-     *             [0]=>0,
-     *             [1]=>1
-     *         ],
-     *         [1] => [
-     *             [0]=>2,
-     *             [1]=>3,
-     *             [2]=>4
-     *         ]
-     * }
-     *
-     * @param String $string
-     * @return Array
-     */
-    public function array_encode(string $string): array
-    {
-        $array = [];
-        $b = explode('/', $string);
-        for ($i = 0; $i <= count($b) - 1; $i++) {
-            $d = [];
-            $c = explode(':', $b[$i]);
-            for ($y = 0; $y <= count($c) - 1; $y++) {
-                $d[$y] = $c[$y];
-            }
-            $array[$i] = $d;
-        }
-
-        return $array;
-    }
-
-    /**
-     * HTML 顯示警告訊息
-     *
-     * @param String $string
-     * @return Boolean
-     */
-    public function html_alert_text(string $string): bool
-    {
-        echo "<h1>$string</h1>";
-        return true;
-    }
-
-    /**
-     * HTML 顯示警告訊息(回傳)
-     *
-     * @param String $string
-     * @return String
-     */
-    public function html_alert_texts(string $string): string
-    {
-        return "<h1>$string</h1>";
     }
 
     /**
@@ -364,10 +97,10 @@ class Utils
      * [0] => 秒數
      * [1] => 地址
      *
-     * @param Array $array
+     * @param array $array
      * @return Boolean
      */
-    public function goto_page(array $array): bool
+    public static function goto_page(array $array): bool
     {
         header('refresh:' . $array[0] . ';url="' . $array[1] . '"');
         return true;
@@ -383,10 +116,10 @@ class Utils
      * [3] => 地址
      *
      * @param Boolean $boolean
-     * @param Array $array
+     * @param array $array
      * @return Boolean
      */
-    public function result(bool $boolean, array $array): bool
+    public static function result(bool $boolean, array $array): bool
     {
         if ($boolean) {
             echo "<h1>$array[0]</h1>";
@@ -403,7 +136,7 @@ class Utils
      * @param Integer $layer
      * @return String
      */
-    public function router(int $layer = 1): string
+    public static function router(int $layer = 1): string
     {
         $url = $_SERVER['REQUEST_URI'];
         $REQUEST = explode("/", $url);
@@ -417,7 +150,7 @@ class Utils
      * @param String $path
      * @return String
      */
-    public function resources(string $path): string
+    public static function resources(string $path): string
     {
         return '//' . $_SERVER['HTTP_HOST'] . '/assets/' . $path;
     }
@@ -428,9 +161,28 @@ class Utils
      * @param String $path
      * @return String
      */
-    public function website_path(string $path): string
+    public static function website_path(string $path): string
     {
         return '//' . $_SERVER['HTTP_HOST'] . '/' . $path;
+    }
+
+    /**
+     * 改變檔案執行的目錄環境
+     * @param $directory
+     * @return bool|null
+     */
+    public static function setWorkingDirectory($directory)
+    {
+        if (is_dir($directory)) {
+            // 尝试改变当前工作目录
+            if (chdir($directory)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -441,7 +193,7 @@ class Utils
      * @param Integer $quantity
      * @return array
      */
-    public function random_not_repeat(int $min = 1, int $max = 100, int $quantity = 5): array
+    public static function random_not_repeat(int $min = 1, int $max = 100, int $quantity = 5): array
     {
         $numbers = range($min, $max);
         shuffle($numbers);
@@ -452,7 +204,7 @@ class Utils
      * @param int $length
      * @return string
      */
-    public function Get_eng_randoom(int $length = 10): string
+    public static function Get_eng_randoom(int $length = 10): string
     {
         $str = "";
         $characters = array_merge(range('A', 'Z'), range('a', 'z'), range('0', '9'));
@@ -469,9 +221,11 @@ class Utils
      *
      * @return string
      */
-    public function GetIP(): string
+    public static function GetIP(): string
     {
-        if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
+        if(!empty($_SERVER["HTTP_CF_CONNECTING_IP"])){
+            $cip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+        }else if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
             $cip = $_SERVER["HTTP_CLIENT_IP"];
         } elseif (!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) {
             $cip = $_SERVER["HTTP_X_FORWARDED_FOR"];
@@ -486,7 +240,7 @@ class Utils
         return $cip;
     }
 
-    public function get_browser($user_agent)
+    public static function get_browser($user_agent)
     {
         // Make case-insensitive.
         $t = strtolower($user_agent);
@@ -537,7 +291,7 @@ class Utils
     /**
      * @return string
      */
-    public function GetDevice(): ?string
+    public static function GetDevice(): ?string
     {
         $iPod = stripos($_SERVER['HTTP_USER_AGENT'], "iPod");
         $iPhone = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone");
@@ -609,99 +363,13 @@ class Utils
     }
 
     /**
-     * POST 方法
-     *
-     * @param String $string
-     * @return Mixed
-     */
-    public function post(string $string = "")
-    {
-        if (@$string === "") {
-            return $_POST;
-        }
-
-        return $_POST[$string];
-    }
-
-    /**
-     * REQUEST 方法
-     *
-     * @param String $string
-     * @return Mixed
-     */
-    public function request(string $string = "")
-    {
-        if (@$string === "") {
-            return $_REQUEST;
-        }
-
-        return $_REQUEST[$string];
-    }
-
-    /**
-     * GET 方法
-     *
-     * @param String $string
-     * @return Mixed
-     */
-    public function get(string $string = "")
-    {
-        if (@$string === "") {
-            return $_GET;
-        }
-
-        return $_GET[$string];
-    }
-
-    public function dsession(string $name = ""): void
-    {
-        unset($_SESSION[$name]);
-    }
-
-    public function cookie(string $string = "")
-    {
-        if (@$string === "") {
-            return $_COOKIE;
-        }
-
-        return $_COOKIE[$string];
-    }
-
-    /**
-     * FILES 方法
-     *
-     * @param String $string
-     * @return Mixed
-     */
-    public function files(string $string = "")
-    {
-        if (@$string === "") {
-            return $_FILES;
-        }
-
-        return $_FILES[$string];
-    }
-
-    /**
-     * 設定 SESSION 方法
-     *
-     * @param Array $array
-     * @return Boolean
-     */
-    public function set_cookie(array $array = [null, null, 0]): bool
-    {
-        setcookie($array[0], $array[1], ['samesite' => 'None', 'secure' => true, 'expires' => $array[2]]);
-        return true;
-    }
-
-    /**
      * 釘選物件
      *
      * @param Mixed $mixed
      * @param string $string
      * @return Boolean
      */
-    public function pinv($mixed, string $string = "Default"): bool
+    public static function pinv($mixed, string $string = "Default"): bool
     {
         bdump($mixed, $string);
         return true;
@@ -713,155 +381,19 @@ class Utils
      * @param String $string
      * @return String
      */
-    public function m(string $string): string
+    public static function m(string $string): string
     {
         return md5($string);
     }
 
-    /**
-     * Array 搜尋數值差別
-     *
-     * @param Array $arr1
-     * @param Array $arr2
-     * @param boolean $result
-     * @param boolean $notfoundmsg
-     * @return array|bool
-     */
-    public function array_diffs(array $arr1, array $arr2, bool $result = false, bool $notfoundmsg = false)
-    {
-        $arr = [];
-        foreach ($arr1 as $key => $value) {
-            if (!empty($arr2[$key])) {
-                if (@$arr1[$key] !== $arr2[$key]) {
-                    $r = true;
-                } else {
-                    $r = false;
-                }
-                $arr[] = $r;
-            }
-            if ($notfoundmsg === true) {
-                echo $key . " 未找相關指標名稱。<br>";
-            }
-
-        }
-        //if($e>0) return false;
-        if ($result === true) {
-            return $arr;
-        }
-        return true;
-    }
-
-    /**
-     * Array 由指標群組抽取特定指標
-     *
-     * *nametokey
-     *  true:(JSON){"0":"1","1":"2","2":"3"}
-     *  false:(JSON){"test1":"1","test2":"2","test3":"3"}
-     *
-     * *result
-     *  true:(PHP)return array()
-     *  false:(PHP)return boolean(true)
-     *
-     * @param Array $array
-     * @param array|null $keyrows
-     * @param boolean $nametokey
-     * @param bool $result
-     * @param bool $keyint
-     * @return array|bool
-     */
-    public function array_splice_key(array &$array, array $keyrows = null, bool $nametokey = false, bool $result = false, bool $keyint = false)
-    {
-        $arr = [];
-        if ($keyrows !== null && is_array($keyrows)) {
-            if ($nametokey === true) {
-                $int_arr = $this->array_keytovalue($array);
-                foreach ($keyrows as $k => $v) {
-                    if ($result === true) {
-                        $arr[] = $array[$int_arr[$v]];
-                    }
-                    unset($array[$int_arr[$v]]);
-                }
-            } else {
-                foreach ($array as $key => $value) {
-                    for ($i = 0; $i <= count($keyrows) - 1; $i++) {
-                        if ($key === $keyrows[$i]) {
-                            if ($result === true) {
-                                $arr[] = $array[$key];
-                            }
-                            unset($array[$key]);
-                        }
-                    }
-                }
-            }
-            if ($keyint === true) {
-                $array = $this->array_resort($array);
-            }
-            if ($result === true) {
-                return $arr;
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Array 陣列指標名稱轉換為數字化指標名稱
-     *
-     * @param Array $array
-     * @param Boolean $value
-     * @param String $prefix
-     * @return array|false
-     */
-    public function array_keytovalue(array $array, bool $value = false, string $prefix = ":")
-    {
-        $arr = [];
-        $k = 0;
-        if (is_array($array)) {
-            foreach ($array as $key => $v) {
-                if ($value === true) {
-                    $arr[$k] = $key . $prefix . $v;
-                } else {
-                    $arr[$k] = $key;
-                }
-                $k++;
-            }
-            return $arr;
-        }
-        return false;
-    }
-
-    /**
-     * Array 指標數值化排序
-     *
-     * @param Array $array
-     * @param Int $offset
-     * @param Int $k
-     * @return array
-     */
-    public function array_resort(array $array, int $offset = -1, int $k = 0): array
-    {
-        $arr = [];
-        foreach ($array as $key => $value) {
-            if ($offset === (-1)) {
-                $arr[$k] = $value;
-                $k++;
-            } else if ($k <= count($array) - $offset - 1) {
-                $arr[$k] = $value;
-                $k++;
-            }
-        }
-        return $arr;
-    }
-
-    public function rrmdir($dir): void
+    public static function rrmdir($dir): void
     {
         if (is_dir($dir)) {
             $objects = scandir($dir);
             foreach ($objects as $object) {
                 if ($object !== "." && $object !== "..") {
                     if (filetype($dir . "/" . $object) === "dir") {
-                        $this->rrmdir($dir . "/" . $object);
+                        self::rrmdir($dir . "/" . $object);
                     } else {
                         unlink($dir . "/" . $object);
                     }
@@ -878,9 +410,9 @@ class Utils
      *
      * @return String
      */
-    public function uid(): string
+    public static function uid($prefix=''): string
     {
-        return uniqid('', true);
+        return uniqid($prefix, true);
     }
 
     /**
@@ -889,7 +421,7 @@ class Utils
      * @param String $password
      * @return String
      */
-    public function passwd_encode(string $password): string
+    public static function passwd_encode(string $password): string
     {
         return password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
     }
@@ -901,7 +433,7 @@ class Utils
      * @param String $hash
      * @return Boolean
      */
-    public function passwd_decode(string $password, string $hash): ?bool
+    public static function passwd_decode(string $password, string $hash): ?bool
     {
         if (password_verify($password, $hash)) {
             return true;
@@ -910,7 +442,7 @@ class Utils
         return false;
     }
 
-    public function callWebsite($URL)
+    public static function callWebsite($URL)
     {
         $ch = curl_init($URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -922,17 +454,17 @@ class Utils
         return $response;
     }
 
-    public function jsone(array $arr)
+    public static function jsone(array $arr)
     {
         return json_encode($arr, JSON_UNESCAPED_UNICODE);
     }
 
-    public function jsond(string $str)
+    public static function jsond(string $str)
     {
         return json_decode($str, true);
     }
 
-    public function getCpuUsage()
+    public static function getCpuUsage()
     {
         $proc = getrusage();
         $e = $proc['ru_stime.tv_sec'] + ($proc['ru_stime.tv_usec'] * 1E-6);
@@ -940,52 +472,15 @@ class Utils
         return $t;
     }
 
-    public function getMemoryUsage()
+    public static function getMemoryUsage()
     {
-        return $this->convertByte(memory_get_usage(true));
+        return self::convertByte(memory_get_usage(true));
     }
 
-    public function convertByte($size)
+    public static function convertByte($size)
     {
         $unit = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
         return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
-    }
-
-    /**
-     * @param $member
-     * @return string|void
-     */
-    public function getMemberType($type)
-    {
-        switch ($type) {
-            case "0":
-                return "普通帳號";
-            case "1":
-                return "API連接帳號";
-            case "2":
-                return "完全帳號";
-        }
-    }
-
-    public function getSource($str)
-    {
-        $str1 = "";
-        $arr = $this->exp(",", $str);
-        foreach ($arr as $value) {
-            $arr1 = $this->exp(":", $value);
-            switch ($arr1[0]) {
-                case "f":
-                    $str1 .= "檔案名稱：" . $arr1[1] . "<br>";
-                    break;
-                case "l":
-                    $str1 .= "行數：" . $arr1[1] . "<br>";
-                    break;
-                case "a":
-                    $str1 .= "用途：" . $arr1[1] . "<br>";
-                    break;
-            }
-        }
-        return $str1;
     }
 
     /**
@@ -993,50 +488,14 @@ class Utils
      *
      * @param String $prefix
      * @param String $string
-     * @return Array
+     * @return array
      */
-    public function exp(string $prefix, string $string): array
+    public static function exp(string $prefix, string $string): array
     {
         return explode($prefix, $string);
     }
 
-    public function getTruetoString($bool, $text = false)
-    {
-        if (!$text) {
-            if ($bool == "true") {
-                return '<span class="badge rounded-pill bg-success">開啟</span>';
-            } elseif ($bool == "false") {
-                return '<span class="badge rounded-pill bg-danger">關閉</span>';
-            } else {
-                return '<span class="badge rounded-pill bg-warning text-dark">異常</span>';
-            }
-        } else {
-            if ($bool == "true") {
-                return '開啟';
-            } elseif ($bool == "false") {
-                return '關閉';
-            } else {
-                return '異常';
-            }
-        }
-    }
-
-    public function getprivacy($privacy)
-    {
-        switch ($privacy) {
-            case "public":
-                return "公開";
-                break;
-            case "private":
-                return "私人";
-                break;
-            case "protected":
-                return "受保護";
-                break;
-        }
-    }
-
-    public function getInstanceAddress($onlyHostName = false, $return_array = false)
+    public static function getInstanceAddress($onlyHostName = false, $return_array = false)
     {
         if (isset($_SERVER['HTTPS']) &&
             ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
@@ -1054,6 +513,18 @@ class Utils
         } else {
             return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         }
+    }
+
+    /**
+     * @param string $d
+     * @return bool
+     */
+    public static function BooleanParse(string $d): bool
+    {
+        if($d === "true"){
+            return true;
+        }
+        return false;
     }
 
 }

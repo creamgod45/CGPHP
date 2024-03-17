@@ -54,21 +54,17 @@ class ParseType implements ParseTypeInterface
 
     public function toJSON()
     {
-        // TODO: Implement toJSON() method.
     }
 
     public function toObject()
     {
-        // TODO: Implement toObject() method.
     }
 
     public function toInteger()
     {
-        // TODO: Implement toInteger() method.
     }
 
     public function toMap()
     {
-        // TODO: Implement toMap() method.
     }
 }

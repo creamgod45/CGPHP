@@ -11,7 +11,7 @@ class Timeout
 {
     public string $key;
 
-    private $us;
+    private UserStorage $us;
 
     public function __construct($key, $expired = 10)
     {

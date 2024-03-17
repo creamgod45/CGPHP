@@ -2,10 +2,10 @@
 
 namespace File;
 
+use Utils\Utils;
 use Exception;
 use Nette\Utils\DateTime;
 use Type\Array\CGArray;
-use Utils\Utils;
 
 class FileBuilder
 {

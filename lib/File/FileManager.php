@@ -2,12 +2,13 @@
 
 namespace File;
 
-use Nette\Database\Connection;
 use Utils\Utils;
+use Nette\Database\Connection;
 
 class FileManager
 {
     private static Connection $conn;
+    private static bool $loaded = false;
 
     public function __construct()
     {
@@ -16,9 +17,34 @@ class FileManager
 
     public static function init()
     {
-        self::$conn = new Connection('mysql:host=127.0.0.1;dbname=', '', '');
-        self::$conn->connect();
+        self::setLoaded(true);
+        self::$conn = \Utils\Connection::conn();
     }
+
+    /**
+     * @param bool $loaded
+     */
+    private static function setLoaded(bool $loaded): void
+    {
+        self::$loaded = $loaded;
+    }
+
+    /**
+     * @return bool
+     */
+    private static function isLoaded(): bool
+    {
+        return self::$loaded;
+    }
+
+    /**
+     * @return void
+     */
+    private static function firstConditionInit(): void
+    {
+        if (!self::isLoaded()) self::init();
+    }
+
 
     /**
      * @param string $fileID
@@ -26,6 +52,7 @@ class FileManager
      */
     public static function getFileBase(string $fileID)
     {
+        self::firstConditionInit();
         $string = 'SELECT * FROM `cgphp_filebase` WHERE `fileID` = ?';
         $row = self::$conn->fetch($string, $fileID);
         if ($row === null)
@@ -54,6 +81,7 @@ class FileManager
      */
     public static function getFileBases()
     {
+        self::firstConditionInit();
         $string = 'SELECT * FROM `cgphp_filebase`';
         $rows = self::$conn->fetchAll($string);
         $array = [];
@@ -80,6 +108,7 @@ class FileManager
 
     public static function addFileBase(string $fileID, string $fileCode, string $fileName, string $fileExtension, int $fileSize, string $path, string $pathName, string $MIME, string $URL, ?string $UID, int $creatAt)
     {
+        self::firstConditionInit();
     }
 
     /**
@@ -88,6 +117,7 @@ class FileManager
      */
     public static function addFileBases(array $fileBases): void
     {
+        self::firstConditionInit();
         foreach ($fileBases as $fileBase) {
             self::addFileBaseClass($fileBase);
         }
@@ -95,10 +125,12 @@ class FileManager
 
     public static function addFileBaseClass(FileBase $fileBase)
     {
+        self::firstConditionInit();
     }
 
     public static function delFileBase(string $fileID)
     {
+        self::firstConditionInit();
         $string = "DELETE FROM `cgphp_filebase` WHERE `fileID` = ?";
         return self::$conn->query($string, $fileID);
     }

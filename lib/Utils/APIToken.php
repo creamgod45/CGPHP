@@ -3,6 +3,12 @@
 
 namespace Utils;
 
+use JetBrains\PhpStorm\Deprecated;
+
+#[Deprecated(
+    reason: '架構過於舊 API 存在安全漏洞',
+    replacement: \Utils\APITOKENv2::class
+)]
 class APIToken
 {
 

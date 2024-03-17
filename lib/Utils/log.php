@@ -2,8 +2,12 @@
 
 namespace Utils;
 
+use JetBrains\PhpStorm\Deprecated;
 use Nette\Utils\FileSystem as fs;
 
+#[Deprecated(
+    reason: '套件已經不實用!! API過舊'
+)]
 /**
  * 本地、資料庫用途紀錄模型
  */
@@ -18,7 +22,9 @@ class log
     {
         $this->Utils = new Utils();
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function savelogsdb($Type, $Data, $Source, $IP, $Device)
     {
         $sql = "INSERT INTO `zfcr_log`( `Type`, `Data`, `Source`, `IP`, `Device`, `create_time`)";
@@ -44,6 +50,9 @@ class log
      * @param $IP
      * @param $Device
      */
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function savelogsfile($Source, $PATH = "log")
     {
         $filename = PATH . "/" . $PATH . "/" . time() . "_" . $Source . ".log";
@@ -64,6 +73,9 @@ class log
      * @param bool $line
      * @return string
      */
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function toString(bool $line = true)
     {
         $str = "";
@@ -83,7 +95,9 @@ class log
         }
         return $str;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function getLogsWithMemberUUID($UUID, $option = "*")
     {
         $sql = "SELECT $option FROM `zfcr_log`";
@@ -93,7 +107,9 @@ class log
         ];
         return $this->Utils->mquery(['list', $sql, $arr]);
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function getlogsdb($ID, $option = "*")
     {
         $sql = "SELECT $option FROM `zfcr_log`";
@@ -103,7 +119,9 @@ class log
         ];
         return $this->Utils->mquery(['get', $sql, $arr]);
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function getlogsfile($filename)
     {
         if (!file_exists($filename)) {
@@ -115,7 +133,9 @@ class log
         }
         return -1;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      * @return array
      */
@@ -123,7 +143,9 @@ class log
     {
         return $this->logs;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     /**
      * @param array $logs
      */
@@ -131,7 +153,9 @@ class log
     {
         $this->logs = $logs;
     }
-
+    #[Deprecated(
+        reason: '套件已經不實用!! API過舊'
+    )]
     public function addLog($time, $type, $log)
     {
         $this->logs [] = [$time, $type, $log];

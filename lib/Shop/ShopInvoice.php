@@ -2,11 +2,12 @@
 
 namespace Shop;
 
-use Nette\Utils\DateTime;
 use Utils\Utils;
+use Nette\Utils\DateTime;
 
 class ShopInvoice
 {
+    public string $ShopID = "";
     public string $InvoiceID = "";
     /**
      * @var ShopItem[]
@@ -25,8 +26,10 @@ class ShopInvoice
     public DateTime $updateAt;
 
     /**
+     * @param string $ShopID
      * @param string $InvoiceID
      * @param ShopItem[] $items
+     * @param CoinType $CoinType
      * @param float $price
      * @param float $finalPrice
      * @param float $discount
@@ -34,8 +37,9 @@ class ShopInvoice
      * @param int $creatAt
      * @param DateTime $updateAt
      */
-    public function __construct(string $InvoiceID, array $items, CoinType $CoinType, float $price, float $finalPrice, float $discount, array $Coupons, int $creatAt, DateTime $updateAt)
+    public function __construct(string $ShopID, string $InvoiceID, array $items, CoinType $CoinType, float $price, float $finalPrice, float $discount, array $Coupons, int $creatAt, DateTime $updateAt)
     {
+        $this->ShopID = $ShopID;
         $this->InvoiceID = $InvoiceID;
         $this->items = $items;
         $this->CoinType = $CoinType;
@@ -54,6 +58,7 @@ class ShopInvoice
         } else {
             $this->InvoiceID = md5((new Utils())->uid());
         }
+        $this->ShopID = $shopInvoice->ShopID;
         $this->items = $shopInvoice->items;
         $this->CoinType = $shopInvoice->CoinType;
         $this->price = $shopInvoice->price;
@@ -62,6 +67,14 @@ class ShopInvoice
         $this->Coupons = $shopInvoice->Coupons;
         $this->creatAt = $shopInvoice->creatAt;
         $this->updateAt = $shopInvoice->updateAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShopID(): string
+    {
+        return $this->ShopID;
     }
 
     /**
