@@ -20,7 +20,7 @@ class Member
     protected bool $enable;
     protected string $createdAt;
     protected DateTime $updatedAt;
-    protected PermissionManager $Permissions;
+    protected PermissionManager $permissionManager;
     private bool $isInitialized = false;
 
     public function __construct($list = [])
@@ -45,7 +45,7 @@ class Member
         $this->createdAt = $member->createdAt;
         $this->updatedAt = $member->updatedAt;
         $this->isInitialized = $member->isInitialized;
-        $this->Permissions = $member->Permissions;
+        $this->permissionManager = $member->permissionManager;
         return $this;
     }
 
@@ -63,7 +63,7 @@ class Member
             "createdAt" => $this->createdAt,
             "updatedAt" => $this->updatedAt->getTimestamp(),
             "isInitialized" => $this->isInitialized,
-            "Permissions" => $this->Permissions,
+            "Permissions" => $this->permissionManager,
         ];
     }
 
@@ -84,7 +84,7 @@ class Member
         } catch (Exception $e) {
         }
         $this->isInitialized = $array["isInitialized"];
-        $this->Permissions = $array["Permissions"];
+        $this->permissionManager = $array["Permissions"];
         return $this;
     }
 
@@ -246,17 +246,17 @@ class Member
     /**
      * @return PermissionManager
      */
-    public function getPermissions(): PermissionManager
+    public function getPermissionManager(): PermissionManager
     {
-        return $this->Permissions;
+        return $this->permissionManager;
     }
 
     /**
-     * @param PermissionManager $Permissions
+     * @param PermissionManager $permissionManager
      */
-    public function setPermissions(PermissionManager $Permissions): void
+    public function setPermissionManager(PermissionManager $permissionManager): void
     {
-        $this->Permissions = $Permissions;
+        $this->permissionManager = $permissionManager;
     }
 
     public function updateMemberData(): Member

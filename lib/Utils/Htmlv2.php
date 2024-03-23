@@ -84,8 +84,9 @@ class Htmlv2 extends HTML
         return $this;
     }
 
-    public function attr($name, $value)
+    public function attr(string $name, $value)
     {
+        if($name==="") return $this;
         @$config = $this->getarray()->getArray()["config"];
         if (@!empty($config)) {
             if (is_array($value)) {

@@ -2,6 +2,8 @@
 
 namespace chatroom;
 
+use I18N\ELanguageText;
+use I18N\I18N;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 use RuntimeException;
@@ -75,6 +77,11 @@ class ChatroomManager
         }
     }
 
+    private static function getI18N(): I18N
+    {
+        return new I18N();
+    }
+
 
     /**
      * @param string|ChatroomNameField $e
@@ -88,7 +95,17 @@ class ChatroomManager
         $r = match ($e) {
             ChatroomNameField::CID->value, ChatroomNameField::CID => self::$conn->fetch("SELECT * FROM `cgphp_chatroom` WHERE `CID` = ?", $e_value),
             ChatroomNameField::ID->value, ChatroomNameField::ID => self::$conn->fetch("SELECT * FROM `cgphp_chatroom` WHERE `ID` = ?", $e_value),
-            default => throw new RuntimeException(__CLASS__ . "#" . __FUNCTION__ . "(" . $e->value . ", $e_value) NOT VALID $e->value value"),
+            default => throw new RuntimeException(self::getI18N()
+                ->getLanguage(
+                    ELanguageText::ChatroomManger_getChatroom_1,
+                    true
+                )
+                    ->Replace("%CLASS%", __CLASS__)
+                    ->Replace("%FUNCTION%", __FUNCTION__)
+                    ->Replace("%ChatroomNameField_e_value%", $e->value)
+                    ->Replace("%e_value%", $e_value)
+                    ->toString()
+                ),
         };
         if ($r === null) return null;
         $m = self::coverMembers($r->members);
@@ -140,9 +157,21 @@ class ChatroomManager
                 self::$conn->query("UPDATE `cgphp_chatroom` SET", $array, "WHERE `ID` = ?", $e_value);
                 break;
             default:
-                throw new RuntimeException(__CLASS__ . "#" . __FUNCTION__ . "(" . $e->value . ", $e_value, " . var_export($array, true) . ") NOT VALID $e->value value");
+                throw new RuntimeException(self::getI18N()->
+                    getLanguage(
+                        ELanguageText::ChatroomManger_editChatroom_1,
+                        true)
+                        ->Replace("%CLASS%", __CLASS__)
+                        ->Replace("%FUNCTION%", __FUNCTION__)
+                        ->Replace("%ChatroomNameField_e_value%", $e->value)
+                        ->Replace("%e_value%", $e_value)
+                        ->Replace("%var_export_array_to_string%", var_export($array, true))
+                        ->toString()
+                );
                 break;
         }
+        // %CLASS%#%FUNCTION%(%ChatroomNameField_e_value%, %e_value%, %var_export_array_to_string%) NOT VALID %ChatroomNameField_e_value% value
+        //__CLASS__ . "#" . __FUNCTION__ . "(" . $e->value . ", $e_value, " . var_export($array, true) . ") NOT VALID $e->value value"
     }
 
     /**

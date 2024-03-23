@@ -45,6 +45,7 @@ require_once 'autoload.php';
 
 // Use list
 use Auth\UniqueVisiterID;
+use I18N\I18N;
 use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
 use Server\ApplicationLayer;
@@ -60,20 +61,19 @@ try {
         Debugger::enable();
     }
     $Config = require "config.php";
+    $i18N = new I18N();
     $Utils = new Utils();
     $Request = new Request();
     $ApplicationLayer = new ApplicationLayer();
     $storage = new FileStorage('temp');
-    $globalcache = new Cache($storage, "globalcache_".time());
+    $globalcache = new Cache($storage, "globalcache");
     $uniqueVisiterID = new UniqueVisiterID();
 } catch (Exception $e) {
     $debug = $e;
     var_dump($debug);
 }
-include_once 'mode.php'; // Website mode controller
 
-//Authentication Layout
-if (!$ApplicationLayer->run()) exit();
+//include_once 'mode.php'; // Website mode controller
 
 //Middle Layout
 $routers = true;
@@ -82,6 +82,7 @@ include_once "routers.php";
 /* @Debug @only_devloper_use */
 if (@!empty($Config)) $Utils->pinv($Config, 'Config');
 if (@!empty($debug)) $Utils->pinv($debug, 'debug');
+if (@!empty($i18N)) $Utils->pinv($i18N, 'i18N');
 if (@!empty(router(null))) $Utils->pinv(router(null), 'router');
 if (@!empty($expire_message)) $Utils->pinv($expire_message, 'expire');
 if (@!empty(headers_list())) $Utils->pinv(headers_list(), 'HTTP Headers list');

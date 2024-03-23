@@ -1,0 +1,16 @@
+ChatroomManger_editChatroom_1: '%CLASS%#%FUNCTION%(%ChatroomNameField_e_value%, %e_value%,
+  %var_export_array_to_string%)的%ChatroomNameField_e_value%值不有效'
+ChatroomManger_getChatroom_1: '%CLASS%#%FUNCTION%(%ChatroomNameField_e_value%, %e_value%)的%ChatroomNameField_e_value%值不有效'
+RouterTemplatesHomePage_10: "使用自制的网站文件存储系统FileBase，增加了文件管理和数据库存储。"
+RouterTemplatesHomePage_11: "具有开放式架构，根据个人需要可以随意扩展开发结构，但仍需注意信息安全问题！！"
+RouterTemplatesHomePage_12: "I18N内置引入国际化本地化语言功能完美兼容。I18N->buildLanguageMap()设置语言，new
+  I18N(null, true)可以进入构建语言模式。"
+RouterTemplatesHomePage_1_Title: "CGPHP网站示例"
+RouterTemplatesHomePage_2_Description: "集成了大量实用功能的框架"
+RouterTemplatesHomePage_3_IWantToContinueToSee: "我想继续查看"
+RouterTemplatesHomePage_4: "自动生成版权保护信息，请查看wiki了解源代码详情"
+RouterTemplatesHomePage_5_View: "查看"
+RouterTemplatesHomePage_6: "为懒人整合功能。网站模式和环境设置仍保留最原始的PHP功能。"
+RouterTemplatesHomePage_7: "便利的CGPath CGArray CGString，像Java架构的选择器类，可以轻松转换为类型。"
+RouterTemplatesHomePage_8: "BootBuilder简化了上一代的复杂架构！！"
+RouterTemplatesHomePage_9: "解决SESSION的覆盖漏洞，使用自制的存储系统并加密保护"

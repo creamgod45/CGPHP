@@ -3,6 +3,8 @@
 namespace Utils;
 
 use Auth\Member;
+use I18N\ELanguageCode;
+use Modules\defaultModule;
 use Type\Array\CGArray;
 
 class BootBuilder
@@ -26,13 +28,19 @@ class BootBuilder
     /**
      * @var string js
      */
-    private string $script = 'const $jq = jQuery.noConflict();';
+    private string $script = '';
     /**
      * @var mixed
      */
     private $menu = true;
 
     private Member $member;
+    private Module $module;
+
+    public function __construct()
+    {
+        $this->module = new defaultModule();
+    }
 
     /**
      * @return Member
@@ -44,31 +52,36 @@ class BootBuilder
 
     /**
      * @param Member $member
+     * @return BootBuilder
      */
-    public function setMember(Member $member): void
+    public function setMember(Member $member): BootBuilder
     {
         $this->member = $member;
+        return $this;
     }
 
     /**
-     * @param callable $if{a: bool}
-     * @param string ...$str
-     * @return false|void
+     * @param callable $if (true|false|null)
+     * @param $params
+     * @param string ...$permissions
+     * @return BootBuilder
      */
-    public function hasPermission(callable $if,$params,string ...$str){
+    public function hasPermission(callable $if,$params,string ...$permissions):BootBuilder
+    {
         if($this->member === false) {
-            $if(null, $params);
-            return false;
+            $if(null);
+            return $this;
         }
         if($this->member === null) {
-            $if(null, $params);
-            return false;
+            $if(null);
+            return $this;
         }
-        if($this->member->getPermissions()->hasPermissions2(...$str)){
-            $if(true, $params);
+        if($this->member->getPermissionManager()->hasPermissions2(...$permissions)){
+            $if(true);
         }else{
-            $if(false, $params);
+            $if(false);
         }
+        return $this;
     }
 
     /**
@@ -81,10 +94,12 @@ class BootBuilder
 
     /**
      * @param string $title
+     * @return BootBuilder
      */
-    public function setTitle(string $title): void
+    public function setTitle(string $title): BootBuilder
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -97,10 +112,12 @@ class BootBuilder
 
     /**
      * @param array $assets
+     * @return BootBuilder
      */
-    public function setAssets(array $assets): void
+    public function setAssets(array $assets): BootBuilder
     {
         $this->assets = $assets;
+        return $this;
     }
 
     /**
@@ -113,10 +130,12 @@ class BootBuilder
 
     /**
      * @param string $contentFile
+     * @return BootBuilder
      */
-    public function setContentFile(string $contentFile): void
+    public function setContentFile(string $contentFile): BootBuilder
     {
         $this->contentFile = $contentFile;
+        return $this;
     }
 
     /**
@@ -129,10 +148,12 @@ class BootBuilder
 
     /**
      * @param string $footer
+     * @return BootBuilder
      */
-    public function setFooter(string $footer): void
+    public function setFooter(string $footer): BootBuilder
     {
         $this->footer = $footer;
+        return $this;
     }
 
     /**
@@ -145,10 +166,12 @@ class BootBuilder
 
     /**
      * @param string $script
+     * @return BootBuilder
      */
-    public function setScript(string $script): void
+    public function setScript(string $script): BootBuilder
     {
         $this->script = $script;
+        return $this;
     }
 
     /**
@@ -161,13 +184,15 @@ class BootBuilder
 
     /**
      * @param mixed $menu
+     * @return BootBuilder
      */
-    public function setMenu($menu): void
+    public function setMenu(mixed $menu): BootBuilder
     {
         $this->menu = $menu;
+        return $this;
     }
 
-    public function googlefont()
+    public function googlefont(): BootBuilder
     {
         $this->addAsset((new Htmlv2("link"))
             ->newLine(true)
@@ -182,21 +207,24 @@ class BootBuilder
             ->attr("rel", "preconnect")
             ->attr("crossorigin", "")
             ->build());
+        return $this;
     }
 
-    public function tailwind(){
+    public function tailwind():BootBuilder
+    {
         $this->addAsset((new Htmlv2("script"))
             ->newLine(true)
             ->close(true)
             ->attr("src", "https://cdn.tailwindcss.com")
             ->build());
+        return $this;
     }
 
     /**
      * @param $obj CGArray|array|string 新增素材
      * @return void
      */
-    public function addAsset($obj)
+    public function addAsset($obj):BootBuilder
     {
         if ($obj instanceof CGArray) {
             foreach ($obj->toArray() as $item) {
@@ -209,11 +237,13 @@ class BootBuilder
         } elseif (is_string($obj)) {
             $this->assets[] = $obj;
         }
+        return $this;
     }
 
-    public function animate_css()
+    public function animate_css():BootBuilder
     {
         $this->addAsset($this->css("animate.css", [], csstype::css));
+        return $this;
     }
 
     /**
@@ -243,16 +273,29 @@ class BootBuilder
         return $o->build();
     }
 
-    public function jquery()
+    public function jquery():BootBuilder
     {
         $this->addAsset($this->js("js/jquery.3.7.0.js", []));
+        return $this;
     }
 
-    public function js($path, $attrs)
+    public function video_js($string="zh-TW"): BootBuilder
+    {
+        $this->addAsset($this->css("video-js.min.css", [], csstype::css));
+        $this->addAsset($this->css("vjs.qualityLevel.css", [], csstype::css));
+        $this->addAsset($this->js("js/video.min.js", [], JSLoadMethod::null));
+        $this->addAsset($this->js("js/videojs-contrib-quality-levels.min.js", [], JSLoadMethod::null));
+        $this->addAsset($this->js("js/lang/$string.js", [], JSLoadMethod::null));
+        $this->addAsset($this->js("js/videojs-builder.min.js", []));
+        return $this;
+    }
+
+    public function js($path, $attrs, JSLoadMethod $JSLoadMethod = JSLoadMethod::null)
     {
         $o = (new Htmlv2("script"))
             ->newLine(true)
             ->close(true)
+            ->attr($JSLoadMethod->value, "")
             ->attr("src", (new Utils)->resources($path));
         foreach ($attrs as $attr) {
             $o->attr($attr[0], $attr[1]);
@@ -260,29 +303,33 @@ class BootBuilder
         return $o->build();
     }
 
-    public function fontawesome()
+    public function fontawesome(): BootBuilder
     {
         $this->addAsset($this->css("all.css", [], csstype::css));
         $this->addAsset($this->js("js/all.js", []));
+        return $this;
     }
 
-    public function loadimgjs()
+    public function loadimgjs(): BootBuilder
     {
         $this->addAsset($this->js("js/loadimg.js", []));
+        return $this;
     }
 
-    public function lightbox()
+    public function lightbox(): BootBuilder
     {
         $this->addAsset($this->css("lightbox.min.css", [], csstype::css));
         $this->addAsset($this->js("js/lightbox.min.js", []));
+        return $this;
     }
 
-    public function moment_js()
+    public function moment_js(): BootBuilder
     {
         $this->addAsset($this->js("js/moment.min.js", []));
+        return $this;
     }
 
-    public function bootstrap()
+    public function bootstrap(): BootBuilder
     {
         $this->addAsset(
             (new Htmlv2("script"))
@@ -293,26 +340,31 @@ class BootBuilder
         );
         $this->addAsset($this->css("bootstrap.min.css", [], csstype::css));
         $this->addAsset($this->js("js/bootstrap.min.js", []));
+        return $this;
     }
 
-    public function initialize_css()
+    public function initialize_css(): BootBuilder
     {
         $this->addAsset($this->css("initialize.css", [], csstype::scss));
+        return $this;
     }
 
-    public function corejs()
+    public function corejs(): BootBuilder
     {
         $this->addAsset($this->js("js/core.min.js", []));
+        return $this;
     }
 
-    public function menu(){
+    public function menu(): BootBuilder
+    {
         $this->addAsset($this->css("menu.o.css", [], csstype::scss));
+        return $this;
     }
 
     /**
      * @return void
      */
-    public function builder($Config,$Utils,$Request,$ApplicationLayer,$storage,$cache,$uniqueVisiterID)
+    public function builder($Config,$Utils,$Request,$ApplicationLayer,$storage,$cache,$uniqueVisiterID, $i18N)
     {
         $routers = true;
         $title = $this->title;
@@ -321,7 +373,27 @@ class BootBuilder
         $footer = $this->footer;
         $script = $this->script;
         $menu = $this->menu;
+        $module=$this->module;
         include_once "router/templates/layout.php";
+        $Utils->pinv($this, "BootBuilder");
+    }
+
+    /**
+     * @return Module
+     */
+    public function getModule(): Module
+    {
+        return $this->module;
+    }
+
+    /**
+     * @param Module $module
+     * @return BootBuilder
+     */
+    public function setModule(Module $module)
+    {
+        $this->module = $module;
+        return $this;
     }
 }
 
@@ -331,4 +403,11 @@ enum csstype: string
     case scss = "scss";
     case sass = "sass";
     case null = "null";
+}
+
+enum JSLoadMethod:string
+{
+    case async="async";
+    case defer="defer";
+    case null="";
 }

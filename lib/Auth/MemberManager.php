@@ -133,12 +133,12 @@ class MemberManager
         if ($row->count() > 0) {
             $m = new Member($row);
             if ($m->isAdministrator()) {
-                $m->setPermissions(new AdministratorPermission());
+                $m->setPermissionManager(new AdministratorPermission());
             }else{
                 if($m->getType() === MemberType::store)
-                    $m->setPermissions(new StorePermission());
+                    $m->setPermissionManager(new StorePermission());
                 else
-                    $m->setPermissions(new RiderPermission());
+                    $m->setPermissionManager(new RiderPermission());
             }
             return $m;
         }
@@ -147,7 +147,7 @@ class MemberManager
     }
 
     public function hasPermission(Member $Member, string $permission){
-        return $Member->getPermissions()->hasPermission($permission);
+        return $Member->getPermissionManager()->hasPermission($permission);
     }
 
     /**

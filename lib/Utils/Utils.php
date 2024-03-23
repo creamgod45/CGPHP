@@ -2,7 +2,12 @@
 
 namespace Utils;
 
+use FilesystemIterator;
+use IteratorIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use RuntimeException;
+use Type\String\CGString;
 
 /**
  *
@@ -223,9 +228,9 @@ class Utils
      */
     public static function GetIP(): string
     {
-        if(!empty($_SERVER["HTTP_CF_CONNECTING_IP"])){
+        if (!empty($_SERVER["HTTP_CF_CONNECTING_IP"])) {
             $cip = $_SERVER["HTTP_CF_CONNECTING_IP"];
-        }else if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
+        } else if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
             $cip = $_SERVER["HTTP_CLIENT_IP"];
         } elseif (!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) {
             $cip = $_SERVER["HTTP_X_FORWARDED_FOR"];
@@ -251,8 +256,7 @@ class Utils
         $t = " " . $t;
 
         // Humans / Regular Users
-        if (strpos($t, 'opera') || strpos($t, 'opr/')) return 'Opera';
-        elseif (strpos($t, 'edge')) return 'Edge';
+        if (strpos($t, 'opera') || strpos($t, 'opr/')) return 'Opera'; elseif (strpos($t, 'edge')) return 'Edge';
         elseif (strpos($t, 'chrome')) return 'Chrome';
         elseif (strpos($t, 'safari')) return 'Safari';
         elseif (strpos($t, 'firefox')) return 'Firefox';
@@ -280,10 +284,7 @@ class Utils
         elseif (strpos($t, 'pinterest')) return '[Bot] Pinterest';
 
         // Check for strings commonly used in bot user agents
-        elseif (strpos($t, 'crawler') || strpos($t, 'api') ||
-            strpos($t, 'spider') || strpos($t, 'http') ||
-            strpos($t, 'bot') || strpos($t, 'archive') ||
-            strpos($t, 'info') || strpos($t, 'data')) return '[Bot] Other';
+        elseif (strpos($t, 'crawler') || strpos($t, 'api') || strpos($t, 'spider') || strpos($t, 'http') || strpos($t, 'bot') || strpos($t, 'archive') || strpos($t, 'info') || strpos($t, 'data')) return '[Bot] Other';
 
         return "NULL";
     }
@@ -326,31 +327,7 @@ class Utils
         } else {
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             $os_platform = "Unknown OS Platform";
-            $os_array = array(
-                '/windows nt 10/i' => 'Windows 10',
-                '/windows nt 6.3/i' => 'Windows 8.1',
-                '/windows nt 6.2/i' => 'Windows 8',
-                '/windows nt 6.1/i' => 'Windows 7',
-                '/windows nt 6.0/i' => 'Windows Vista',
-                '/windows nt 5.2/i' => 'Windows Server 2003/XP x64',
-                '/windows nt 5.1/i' => 'Windows XP',
-                '/windows xp/i' => 'Windows XP',
-                '/windows nt 5.0/i' => 'Windows 2000',
-                '/windows me/i' => 'Windows ME',
-                '/win98/i' => 'Windows 98',
-                '/win95/i' => 'Windows 95',
-                '/win16/i' => 'Windows 3.11',
-                '/macintosh|mac os x/i' => 'Mac OS X',
-                '/mac_powerpc/i' => 'Mac OS 9',
-                '/linux/i' => 'Linux',
-                '/ubuntu/i' => 'Ubuntu',
-                '/iphone/i' => 'iPhone',
-                '/ipod/i' => 'iPod',
-                '/ipad/i' => 'iPad',
-                '/android/i' => 'Android',
-                '/blackberry/i' => 'BlackBerry',
-                '/webos/i' => 'Mobile',
-            );
+            $os_array = array('/windows nt 10/i' => 'Windows 10', '/windows nt 6.3/i' => 'Windows 8.1', '/windows nt 6.2/i' => 'Windows 8', '/windows nt 6.1/i' => 'Windows 7', '/windows nt 6.0/i' => 'Windows Vista', '/windows nt 5.2/i' => 'Windows Server 2003/XP x64', '/windows nt 5.1/i' => 'Windows XP', '/windows xp/i' => 'Windows XP', '/windows nt 5.0/i' => 'Windows 2000', '/windows me/i' => 'Windows ME', '/win98/i' => 'Windows 98', '/win95/i' => 'Windows 95', '/win16/i' => 'Windows 3.11', '/macintosh|mac os x/i' => 'Mac OS X', '/mac_powerpc/i' => 'Mac OS 9', '/linux/i' => 'Linux', '/ubuntu/i' => 'Ubuntu', '/iphone/i' => 'iPhone', '/ipod/i' => 'iPod', '/ipad/i' => 'iPad', '/android/i' => 'Android', '/blackberry/i' => 'BlackBerry', '/webos/i' => 'Mobile',);
 
             foreach ($os_array as $regex => $value) {
                 if (preg_match($regex, $user_agent)) {
@@ -410,7 +387,7 @@ class Utils
      *
      * @return String
      */
-    public static function uid($prefix=''): string
+    public static function uid($prefix = ''): string
     {
         return uniqid($prefix, true);
     }
@@ -497,10 +474,7 @@ class Utils
 
     public static function getInstanceAddress($onlyHostName = false, $return_array = false)
     {
-        if (isset($_SERVER['HTTPS']) &&
-            ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
-            isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-            $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+        if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
             $protocol = 'https://';
         } else {
             $protocol = 'http://';
@@ -521,10 +495,102 @@ class Utils
      */
     public static function BooleanParse(string $d): bool
     {
-        if($d === "true"){
+        if ($d === "true") {
             return true;
         }
         return false;
     }
+
+    /**
+     * @param $path
+     * @param bool $CGString
+     * @param bool $deep
+     * @param bool $fileOnly
+     * @param bool $hideFileSearchable
+     * @param array $filterFileExtension
+     * @param int $filterSizeLimit
+     * @param array $filterMIMEType
+     * @param bool $filterPathName
+     * @return array|CGString[]
+     */
+    public static function exploreDirectory($path, bool $CGString = false, bool $deep = false, bool $fileOnly = false, bool $hideFileSearchable = true, array $filterFileExtension = [], int $filterSizeLimit = -1, array $filterMIMEType = [], bool $filterPathName= false): array
+    {
+        $originFilePath="";
+        $results = [];
+        $directoryOptions = FilesystemIterator::SKIP_DOTS; // Always skip "." and ".."
+
+        $dirIterator = new RecursiveDirectoryIterator($path, $directoryOptions);
+
+        if ($deep) {
+            $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
+        } else {
+            $iterator = new IteratorIterator($dirIterator);
+        }
+
+        foreach ($iterator as $item) {
+            if($originFilePath===""){
+                $originFilePath=(new CGString($item->getPathname()))->Replace($item->getFilename())->toString();
+            }
+            $fileName = $item->getFilename();
+
+            // Skip hidden files if required
+            if ($hideFileSearchable && $fileName[0] === '.') {
+                continue;
+            }
+
+            // File-only filter
+            if ($fileOnly && !$item->isFile()) {
+                continue;
+            }
+
+            // File extension filter
+            $filePath = $item->getPathname();
+            $fileExtension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+            if (!empty($filterFileExtension) && !in_array($fileExtension, $filterFileExtension)) {
+                continue;
+            }
+
+            // File size filter
+            $fileSize = $item->getSize();
+            if ($filterSizeLimit !== -1 && $fileSize > $filterSizeLimit) {
+                continue;
+            }
+
+            // MIME type filter
+            if (!empty($filterMIMEType)) {
+                $fileMIMEType = mime_content_type($filePath);
+                if (!in_array($fileMIMEType, $filterMIMEType)) {
+                    continue;
+                }
+            }
+
+            $nowfilepath = (new CGString($filePath))->Replace($fileName)->toString();
+
+            if($filterPathName && $nowfilepath === $originFilePath){
+                if($CGString){
+                    $results[] = new CGString($fileName);
+                }else {
+                    $results[] = $fileName;
+                }
+            }else{
+                if($filterPathName) {
+                    if($CGString){
+                        $results[] = (new CGString($filePath))->Replace($originFilePath);
+                    }else {
+                        $results[] = (new CGString($filePath))->Replace($originFilePath)->toString();
+                    }
+                }else{
+                    if($CGString){
+                        $results[] = new CGString($filePath);
+                    }else {
+                        $results[] = $filePath;
+                    }
+                }
+            }
+        }
+
+        return $results;
+    }
+
 
 }
