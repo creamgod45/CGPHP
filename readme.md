@@ -3,12 +3,14 @@
 ## 資訊
 
 - 作者: CreamGod45
-- 版本: v1.4.0
-- 類型: 內部測試版本(Alpha)
+- 版本: v1.5.0
+- 類型: 測試版本(Beta)
 
 # 幫助
 
 ### 安裝包
+
+安裝錯誤時請自行加入，忽略的包命令
 
 > composer install
 
@@ -54,33 +56,58 @@ case '路由名稱':
 接下來編輯 `/router/{檔案名稱}.php`
 新版本，可以直接把自己的素材直接寫入 BootBuilder 方法快速加載網頁素材
 ```php
-<?php
 /**
- * @var \Type\Array\CGArray $Config
- * @var \Utils\Utils $Utils
- * @var \Server\Request $Request
- * @var \Server\ApplicationLayer $ApplicationLayer
- * @var \Nette\Caching\Storages\FileStorage $storage
- * @var \Nette\Caching\Cache $globalcache
- * @var \Auth\UniqueVisiterID $uniqueVisiterID
+ * @var Type\Array\CGArray $Config
+ * @var Utils\Utils $Utils
+ * @var Server\Request $Request
+ * @var Server\ApplicationLayer $ApplicationLayer
+ * @var Nette\Caching\Storages\FileStorage $storage
+ * @var Nette\Caching\Cache $globalcache
+ * @var Auth\UniqueVisiterID $uniqueVisiterID
+ * @var I18N\I18N $i18N
  * @var bool $routers
  */
-if (@!$routers) exit();
-
-use Utils\BootBuilder;
-use Utils\csstype;
-
 $bb = new BootBuilder();
-$bb->setTitle("首頁");
-$bb->setContentFile("@Home.php");
-$bb->bootstrap();
-$bb->fontawesome();
-$bb->initialize_css();
-$bb->menu();
-$bb->setMenu(true);
-$bb->addAsset($bb->css("@Home.css",[], csstype::css));
-$bb->addAsset($bb->js("js/@Home.js",[]));
-$bb->builder($Config,$Utils,$Request,$ApplicationLayer,$storage,$globalcache,$uniqueVisiterID);
+// 自動讀取網頁使用者想要的語言
+$i18N->setLanguageCode(ELanguageCode::valueof($Utils::default(router(2), "en_US")));
+$bb->setTitle("首頁") // 設定頁面標題
+    ->setModule(new HomeModule()) // 設定模組化存放區 (用於乾淨分離前端與後端)
+    ->setContentFile("@Home.php") // 引入的檔案名稱
+    ->bootstrap() // 引入的套件庫 可以自行新增
+    ->fontawesome() // 引入的套件庫 可以自行新增
+    ->initialize_css() // 引入的套件庫 可以自行新增
+    ->menu() // 引入內建菜單系統
+    ->setMenu(true); // 設定菜單系統顯示狀態
+$us = new UserStorage($storage, $uniqueVisiterID->getKey()); // 使用者空間資料
+if($us->hasData("member")){ 
+    $timeout = $Request->Timeout("MemberDataUpdate", 60); // 定期更新資料
+    if($timeout->isTimeout()){
+        $timeout->addTimeout(60);
+        $memberclass = $us->get("member");
+        if ($memberclass instanceof \Auth\Member) {
+            $memberclass->updateMemberData(); // 更新用戶資料
+            $bb->setMember($memberclass);
+        }
+    }
+    // 檢查是否有權限
+    $bb->hasPermission(function ($if, $params){
+        if($if){
+            if ($params instanceof BootBuilder) {
+                $utils = new \Utils\Utils();
+                $utils::pinv("permission test pass");
+            }
+        }elseif($if===null){
+            $utils = new \Utils\Utils();
+            $utils::pinv("null member");
+        }else{
+            $utils = new \Utils\Utils();
+            $utils::pinv("false");
+        }
+    }, $bb, "admin");
+}
+$bb->addAsset($bb->css("@Home.css",[], csstype::css)) // 引入自製的庫
+    ->addAsset($bb->js("js/@Home.js",[])) // 引入自製的庫
+    ->builder($Config,$Utils,$Request,$ApplicationLayer,$storage,$globalcache,$uniqueVisiterID, $i18N); // 建置頁面
 ```
 舊版本
 ```php
@@ -89,9 +116,15 @@ $bb->builder($Config,$Utils,$Request,$ApplicationLayer,$storage,$globalcache,$un
 use Utils\Htmlv2;
 
 /**
+ * @var Type\Array\CGArray $Config
  * @var Utils\Utils $Utils
  * @var Server\Request $Request
- * @var Server\Request\ApplicationLayer $ApplicationLayer
+ * @var Server\ApplicationLayer $ApplicationLayer
+ * @var Nette\Caching\Storages\FileStorage $storage
+ * @var Nette\Caching\Cache $globalcache
+ * @var Auth\UniqueVisiterID $uniqueVisiterID
+ * @var I18N\I18N $i18N
+ * @var bool $routers
  */
 // 設定頁面標題 [非必要]
 $title = "{頁面標題}";
@@ -128,21 +161,41 @@ include_once "templates/layout.php"; ?>
 <?php
 /**
  * 這裡的區域是給予編輯器認知基本預定義變數。
- * @var array $Config
+ * @var Type\Array\CGArray $Config
  * @var Utils\Utils $Utils
  * @var Server\Request $Request
- * @var Server\Request\ApplicationLayer $ApplicationLayer
+ * @var Server\ApplicationLayer $ApplicationLayer
+ * @var Nette\Caching\Storages\FileStorage $storage
+ * @var Nette\Caching\Cache $globalcache
+ * @var Auth\UniqueVisiterID $uniqueVisiterID
+ * @var I18N\I18N $i18N
+ * @var bool $routers
  */
+
+// 你可以自行定義特殊的選單顯示位置 前提是上級的檔案的 setMenu(false) 或 不設定 然後直接使用
+include_once "menu.php";
 ?>
+
 <!-- 下面的地方可以開始寫網站了，注意這裡開始就不用在建立基本的 head、body、html ，因為上面的操作已經綁你快速建立一個頁面，且幫你自動載入文件了。 -->
 <div>
     Hello World!!
+    當要使用 I18N時，預設英文
+    <?= $i18N->getLanguage(\I18N\ELanguageText::RouterTemplatesHomePage_12) ?><br>
+    設定後:
+    <?php
+        $i18N->setLanguageCode(\I18N\ELanguageCode::zh_TW);
+        echo $i18N->getLanguage(\I18N\ELanguageText::RouterTemplatesHomePage_12) 
+    ?>
 </div>
 ```
 
 接下來直接上傳FTP、XAMPP，預覽 http://127.0.0.1/路由名稱 就可以看到剛剛寫的頁面了。
 
 # 更新日誌
+- 20240324
+    - 大改版此更新請注意，所有檔案並且備份
+    - 新增 I18N
+    - 修改眾多類別從新編寫改善
 - 20231117
     - 大改版此更新請注意，所有檔案並且備份
     - 更新 lib/Server
