@@ -137,7 +137,7 @@ class I18N implements II18N
         $this->setLanguage(ELanguageText::el_GR, "Greek (Greece)");
         $this->setLanguage(ELanguageText::en_AU, "English (Australia)");
         $this->setLanguage(ELanguageText::en_GB, "English (UK)");
-        $this->setLanguage(ELanguageText::en_US, "United States English");
+        $this->setLanguage(ELanguageText::en_US, "English (US)");
         $this->setLanguage(ELanguageText::es_ES, "Spanish (Spain)");
         $this->setLanguage(ELanguageText::es_MX, "Spanish (Mexico)");
         $this->setLanguage(ELanguageText::et_EE, "Estonian (Estonia)");
@@ -248,7 +248,7 @@ class I18N implements II18N
         $this->setLanguage(ELanguageText::vi_VN, "Vietnamese (Vietnam)");
         $this->setLanguage(ELanguageText::xh_ZA, "Xhosa (South Africa)");
         $this->setLanguage(ELanguageText::yo_NG, "Yoruba (Nigeria)");
-        $this->setLanguage(ELanguageText::zh_CN, "Mainland China Simplified Chinese");
+        $this->setLanguage(ELanguageText::zh_CN, "Simplified Chinese (China)");
         $this->setLanguage(ELanguageText::zh_TW, "Traditional Chinese (Taiwan)");
         $this->setLanguage(ELanguageText::zh_HK, "Traditional Chinese (Hong Kong)");
         $this->setLanguage(ELanguageText::zh_SG, "Traditional Chinese (Singapore)");
