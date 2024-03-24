@@ -27,6 +27,14 @@ if (@!$routers) exit();
 
 $us = new UserStorage($storage, $uniqueVisiterID->getKey());
 ?>
+
+<script>
+    function changeLanguage(el){
+        let value = el.value;
+        console.log(location);
+        location.assign("<?= Utils::getInstanceAddress(true) ?>/<?= router(1) ?>/"+value);
+    }
+</script>
 <header class="p-3 bg-dark text-white">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">

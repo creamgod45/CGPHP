@@ -1,8 +1,4 @@
-function changeLanguage(el){
-    let value = el.value;
-    console.log(location);
-    location.assign("http://localhost/index.php/"+value);
-}
+
 
 function closeViewImages(){
     let view_image_bg = document.querySelector("#view-image-bg");
