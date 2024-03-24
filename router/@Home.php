@@ -19,7 +19,7 @@ use Utils\BootBuilder;
 use Utils\csstype;
 
 $bb = new BootBuilder();
-$i18N->setLanguageCode(ELanguageCode::valueof($Utils::default(router(2), "en_US")));
+$i18N->setLanguageCode(ELanguageCode::valueof(\Utils\Utils::default(router(2), "en_US")));
 $bb->setTitle("首頁")
     ->setModule(new HomeModule())
     ->setContentFile("@Home.php")

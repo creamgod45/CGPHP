@@ -4,8 +4,6 @@ namespace Type\String;
 
 use Type\Array\CGArray;
 
-require_once 'lib/Type/String/CGStringInterface.php';
-
 class CGString implements CGStringInterface
 {
     protected string $string;

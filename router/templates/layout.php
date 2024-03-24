@@ -7,6 +7,8 @@
  * @var Nette\Caching\Storages\FileStorage $storage
  * @var Nette\Caching\Cache $cache
  * @var Auth\UniqueVisiterID $uniqueVisiterID
+ * @var \I18N\I18N $i18N
+ * @var \Modules\HomeModule $module
  * @var bool $routers
  */
 if (@!$routers) exit();

@@ -4,10 +4,6 @@ namespace Type\Array;
 
 use Utils\Utils;
 
-require_once 'lib/Type/Array/CGArrayInterface.php';
-require_once 'lib/Type/Array/CGPathInterface.php';
-require_once 'lib/Type/Array/CGPath.php';
-
 class CGArray implements CGArrayInterface
 {
     protected array $array = [];
@@ -24,7 +20,8 @@ class CGArray implements CGArrayInterface
         foreach ($this->array as $key => $value) {
             $arr[] = $key;
         }
-        return $arr;
+        $this->array = $arr;
+        return $this;
     }
 
     public function getValues()
@@ -33,7 +30,8 @@ class CGArray implements CGArrayInterface
         foreach ($this->array as $value) {
             $arr[] = $value;
         }
-        return $arr;
+        $this->array = $arr;
+        return $this;
     }
 
     /**

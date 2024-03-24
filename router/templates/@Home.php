@@ -8,12 +8,14 @@
  * @var Cache $globalcache
  * @var UniqueVisiterID $uniqueVisiterID
  * @var I18N $i18N
+ * @var HomeModule $module
  * @var bool $routers
  */
 
 use Auth\UniqueVisiterID;
 use I18N\ELanguageText;
 use I18N\I18N;
+use Modules\HomeModule;
 use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
 use Server\ApplicationLayer;
@@ -22,6 +24,15 @@ use Type\Array\CGArray;
 use Utils\Utils;
 
 if (@!$routers) exit(); ?>
+<div id="view-image-bg" style="display: none;"></div>
+<div id="view-image" style="display: none;">
+    <div class="card-img shadow-lg">
+        <div class="btn-close" onclick="closeViewImages()"></div>
+        <div class="card-body">
+            <p class="card-text"></p>
+        </div>
+    </div>
+</div>
 <main>
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
@@ -44,12 +55,7 @@ if (@!$routers) exit(); ?>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2">
                 <div class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
+                        <img class="bd-placeholder-img card-img-top"  onclick="viewImages(this, '<?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_4) ?>')" src="<?= Utils::resources("images/img1.png")?>" />
                         <?= rand_commit($Config); ?>
                         <div class="card-body">
                             <p class="card-text"><?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_4) ?></p>
@@ -64,12 +70,7 @@ if (@!$routers) exit(); ?>
                 </div>
                 <div class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
+                        <img class="bd-placeholder-img card-img-top" onclick="viewImages(this, '<?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_6) ?>')" src="<?= Utils::resources("images/img2.png")?>" />
                         <?= rand_commit($Config); ?>
                         <div class="card-body">
                             <p class="card-text"><?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_6) ?></p>
@@ -86,12 +87,7 @@ if (@!$routers) exit(); ?>
                 </div>
                 <div class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
+                        <img class="bd-placeholder-img card-img-top" onclick="viewImages(this, '<?= base64_encode($i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_7)) ?>')" src="<?= Utils::resources("images/img3.png")?>" />
                         <?= rand_commit($Config); ?>
                         <div class="card-body">
                             <p class="card-text"><?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_7) ?></p>
@@ -107,12 +103,7 @@ if (@!$routers) exit(); ?>
 
                 <div class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
+                        <img class="bd-placeholder-img card-img-top" onclick="viewImages(this, '<?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_8) ?>')" src="<?= Utils::resources("images/img4.png")?>" />
                         <?= rand_commit($Config); ?>
                         <div class="card-body">
                             <p class="card-text"><?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_8) ?></p>
@@ -127,12 +118,7 @@ if (@!$routers) exit(); ?>
                 </div>
                 <div class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
+                        <img class="bd-placeholder-img card-img-top" onclick="viewImages(this, '<?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_9) ?>')" src="<?= Utils::resources("images/img5.png")?>" />
                         <?= rand_commit($Config); ?>
                         <div class="card-body">
                             <p class="card-text"><?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_9) ?></p>
@@ -147,12 +133,7 @@ if (@!$routers) exit(); ?>
                 </div>
                 <div class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
+                        <img class="bd-placeholder-img card-img-top" onclick="viewImages(this, '<?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_10) ?>')" src="<?= Utils::resources("images/img6.png")?>" />
                         <?= rand_commit($Config); ?>
                         <div class="card-body">
                             <p class="card-text">
@@ -169,12 +150,7 @@ if (@!$routers) exit(); ?>
                 <?= rand_commit($Config); ?>
                 <div class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
+                        <img class="bd-placeholder-img card-img-top" onclick="viewImages(this, '<?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_11) ?>')" src="<?= Utils::resources("images/img7.png")?>" />
                         <?= rand_commit($Config); ?>
                         <div class="card-body">
                             <p class="card-text">
@@ -190,12 +166,7 @@ if (@!$routers) exit(); ?>
                 </div>
                 <div class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
+                        <img class="bd-placeholder-img card-img-top" onclick="viewImages(this, '<?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_12) ?>')" src="<?= Utils::resources("images/img8.png")?>" />
                         <?= rand_commit($Config); ?>
                         <div class="card-body">
                             <p class="card-text">
