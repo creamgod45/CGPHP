@@ -87,7 +87,7 @@ if (@!$routers) exit(); ?>
                 </div>
                 <div class="col">
                     <div class="card shadow-sm">
-                        <img class="bd-placeholder-img card-img-top" onclick="viewImages(this, '<?= base64_encode($i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_7)) ?>')" src="<?= Utils::resources("images/img3.png")?>" />
+                        <img class="bd-placeholder-img card-img-top" onclick="viewImages(this, '<?= $module::viewImagesInclude($i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_7), $i18N) ?>')" src="<?= Utils::resources("images/img3.png")?>" />
                         <?= rand_commit($Config); ?>
                         <div class="card-body">
                             <p class="card-text"><?= $i18N->getLanguage(ELanguageText::RouterTemplatesHomePage_7) ?></p>

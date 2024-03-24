@@ -5,7 +5,7 @@
  * @var Request $Request
  * @var ApplicationLayer $ApplicationLayer
  * @var FileStorage $storage
- * @var Cache $cache
+ * @var Cache $globalcache
  * @var UniqueVisiterID $uniqueVisiterID
  * @var \I18N\I18N $i18N
  * @var \Modules\defaultModule $module
@@ -41,7 +41,7 @@ $us = new UserStorage($storage, $uniqueVisiterID->getKey());
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                 <select class="form-select" aria-label="Default select example" onchange="changeLanguage(this);">
                     <option selected value="<?= $i18N->getLanguageCode()->name ?>"><?= $i18N->getLanguage(\I18N\ELanguageText::valueof($i18N->getLanguageCode()->name))?></option>
-                    <?= $module::buildSelectLanguageBar($Config, $Utils, $Request,$ApplicationLayer,$storage,$cache,$uniqueVisiterID,$i18N,$routers)?>
+                    <?= $module::buildSelectLanguageBar($i18N)?>
                 </select>
             </form>
         </div>

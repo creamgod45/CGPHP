@@ -364,7 +364,7 @@ class BootBuilder
     /**
      * @return void
      */
-    public function builder($Config,$Utils,$Request,$ApplicationLayer,$storage,$cache,$uniqueVisiterID, $i18N)
+    public function builder($Config,$Utils,$Request,$ApplicationLayer,$storage,$globalcache,$uniqueVisiterID, $i18N)
     {
         $routers = true;
         $title = $this->title;

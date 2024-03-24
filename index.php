@@ -73,7 +73,7 @@ try {
     var_dump($debug);
 }
 
-//include_once 'mode.php'; // Website mode controller
+include_once 'mode.php'; // Website mode controller
 
 //Middle Layout
 $routers = true;

@@ -5,7 +5,7 @@
  * @var Server\Request $Request
  * @var Server\ApplicationLayer $ApplicationLayer
  * @var Nette\Caching\Storages\FileStorage $storage
- * @var Nette\Caching\Cache $cache
+ * @var Nette\Caching\Cache $globalcache
  * @var Auth\UniqueVisiterID $uniqueVisiterID
  * @var \I18N\I18N $i18N
  * @var \Modules\HomeModule $module

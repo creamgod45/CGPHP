@@ -7,7 +7,8 @@ use Utils\Module;
 
 class defaultModule implements Module
 {
-    public static function buildSelectLanguageBar(\Type\Array\CGArray $Config, \Utils\Utils $Utils,\Server\Request $Request, \Server\ApplicationLayer $ApplicationLayer, \Nette\Caching\Storages\FileStorage $storage, \Nette\Caching\Cache $globalcache, \Auth\UniqueVisiterID $uniqueVisiterID, \I18N\I18N $i18N, bool $routers):string
+    // \Type\Array\CGArray $Config, \Utils\Utils $Utils,\Server\Request $Request, \Server\ApplicationLayer $ApplicationLayer, \Nette\Caching\Storages\FileStorage $storage, \Nette\Caching\Cache $globalcache, \Auth\UniqueVisiterID $uniqueVisiterID, \I18N\I18N $i18N, bool $routers
+    public static function buildSelectLanguageBar(\I18N\I18N $i18N):string
     {
         $strings="";
         $ELanguageCodes = ELanguageCode::cases();
