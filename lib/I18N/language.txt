@@ -1,0 +1,137 @@
+af-ZA : Afrikaans (South Africa)/
+am-ET: Amharic (Ethiopia)/
+ar-EG : Arabic (Egyptian)/
+ar-SA : Arabic (Saudi Arabia)/
+as-IN : Assamese (India)/
+ay-BO: Aymara (Bolivia)/
+az-AZ : Azerbaijani (Azerbaijan)/
+ba-RU : Bashkir (Russian)/
+be-BY : Belarusian (Belarus)/
+bg-BG : Bulgarian (Bulgarian)/
+bn-IN : Bengali (India)/
+bs-BA : Bosnian (Bosnia and Herzegovina)/
+cr-CA : Cree (Canada)/
+cs-CZ : Czech (Czech Republic)/
+cy-GB : Welsh (UK)/
+da-DK : Danish (Denmark)/
+de-CH : High German (Switzerland)/
+de-DE : German (Germany)/
+dv-MV : Dhivehi (Maldives)/
+dz-BT: Dzongkha (Bhutan)/
+el-GR : Greek (Greece)/
+en-AU : English (Australia)/
+en-GB : English (UK)/
+en-US : United States English/
+es-ES : Spanish (Spain)/
+es-MX : Spanish (Mexico)/
+et-EE : Estonian (Estonia)/
+fa-IR : Persian (Iran)/
+fi-FI : Finnish (Finland)/
+fil-PH : Tagalog (Philippines)/
+fj-FJ : Fijian (Fiji)/
+fo-FO: Faroe (Faroe Islands)/
+fr-BE : French (Belgium)/
+fr-CA : French (Canada)/
+fr-FR : French (France)/
+ga-IE : Irish (Ireland)/
+gd-GB : Scottish Gaelic (UK)/
+gil-KI: Gibbert (Giribati)/
+gu-IN : Gujarati (India)/
+ha-NG : Hausa (Nigeria)/
+he-IL : Hebrew (Israel)/
+hi-IN : Hindi (India)/
+hr-HR : Croatian (Croatia)/
+hu-HU : Hungarian (Hungary)/
+hy-AM : Armenian (Armenian)/
+ibb-NG : Ibibio (Nigeria)/
+id-ID : Bahasa Indonesia (Indonesia)/
+ig-NG : Igbo (Nigeria)/
+is-IS : Icelandic (Iceland)/
+it-IT : Italian (Italian)/
+iu-CA : Inuktitut (Canada)/
+ja-JP : Japanese (Japan)/
+ka-GE : Georgian (Georgia)/
+kk-KZ : Kazakh (Kazakh)/
+km-KH : Khmer (Cambodia)/
+kn-IN : Kannada (India)/
+ko-KP : Korean (North Korea)/
+ko-KR : Korean (South Korea)/
+ku-TR : Kurdish (Türkiye)/
+kw-GB : Cornish (UK)/
+ky-KG : Kyrgyz (Kyrgyz)/
+ln-CD : Lingala (Democratic Republic of Congo)/
+lo-LA: Lao language (Laos)/
+lt-LT : Lithuanian (Lithuania)/
+lv-LV : Latvian (Latvian)/
+mg-MG : Malagasy (Madagascar)/
+mh-MH : Marshallese (Marshall Islands)/
+mi-NZ: Maori (New Zealand)/
+mk-MK : Macedonian (North Macedonia)/
+ml-IN : Malayalam (India)/
+mn-MN: Mongolian (Mongolia)/
+mn-Mong-CN : Mongolian (Mongolian script, China)/
+mr-IN : Marathi (India)/
+ms-MY : Malay (Malaysia)/
+mt-MT : Maltese (Malta)/
+my-MM : Burmese (Myanmar)/
+na-NR : Nauru (Nauru)/
+ne-NP : Nepali (Nepal)/
+nl-NL : Dutch (Netherlands)/
+no-NO : Norwegian (Norway)/
+ny-MW : Chichewa (Malawi)/
+oj-CA : Ojibway (Canada)/
+or-IN : Oriya (India)/
+pa-Arab-PK : Punjabi (Arabic script, Pakistan)/
+pa-IN : Punjabi (India)/
+pl-PL : Polish (Polish)/
+ps-AF : Pashto (Afghanistan)/
+pt-BR : Portuguese (Brazil)/
+pt-PT : Portuguese (Portugal)/
+qu-PE : Quechua (Peru)/
+ro-RO : Romanian (Romania)/
+ru-RU : Russian (Russia)/
+rw-RW : Rwanda (Rwanda)/
+sa-IN : Sanskrit (India)/
+sd-Deva-IN : Sindhi (Devava, India)/
+sd-PK : Sindhi (Pakistan)/
+si-LK : Sinhala (Sri Lanka)/
+sk-SK : Slovak (Slovakia)/
+sl-SI : Slovenian (Slovenia)/
+sm-WS : Samoan (Samoan)/
+sn-ZW : Shona (Zimbawi)/
+so-DJ : Somali (Djibouti)/
+so-SO : Somali (Somalia)/
+sq-AL : Albanian (Albania)/
+sr-RS : Serbian (Serbia)/
+ss-SZ : Swati (Swaziland)/
+st-ZA : Southern Sotho (South Africa)/
+sv-SE : Swedish (Sweden)/
+sw-KE : Swahili (Kenya)/
+syr-SY : Syriac (Syria)/
+ta-IN : Tamil (India)/
+te-IN : Telugu (India)/
+tg-TJ : Tajik (Tajikistan)/
+th-TH : Thai (Thailand)/
+ti-ER : Tigrinya (Eritrea)/
+ti-ET : Tigrinya (Ethiopia)/
+tj-TJ : Tajik (Tajikistan)/
+tk-TM : Turkmen (Turkmenistan)/
+tl-PH : Tagalog (Philippines)/
+tn-BW : Tswana (Botswana)/
+to-TO: Tongan (Tongan)/
+tr-TR : Turkish (Türkiye)/
+tt-RU : Tatar (Russian)/
+tum-MW : Tumbuka (Malawi)/
+ty-PF : Tahiti (French Polynesia)/
+udm-RU : Udmurt (Russian)/
+ug-CN : Uyghur (China)/
+uk-UA : Ukrainian (Ukraine)/
+ur-PK : Urdu (Pakistan)/
+uz-UZ : Uzbek (Uzbek)/
+ve-ZA : Venda (South Africa)/
+vi-VN : Vietnamese (Vietnam)/
+xh-ZA : Xhosa (South Africa)/
+yo-NG : Yoruba (Nigeria)/
+zh-CN : Mainland China Simplified Chinese/
+zh-TW : Traditional Chinese (Taiwan)/
+zu-ZA : Zulu (South Africa)
