@@ -13,7 +13,7 @@ async function a1(url, data, callback, errors) {
     });
 }
 
-export function generateRandomString(length) {
+function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     let result = '';
     const charactersLength = characters.length;
@@ -23,9 +23,9 @@ export function generateRandomString(length) {
     return result;
 }
 
-export function encodeContext(data) {
+function encodeContext(data) {
     let hash = "";
-    let encodeBase64 = btoa(encodeURIComponent(htmlencode(data)));
+    let encodeBase64 = LZString.compressToBase64(btoa(encodeURIComponent(htmlencode(data))));
     let source= encodeBase64;
     //console.log(encodeBase64);
     let length = encodeBase64.length;
@@ -50,7 +50,7 @@ export function encodeContext(data) {
     };
 }
 
-export function decodeContext(compress) {
+function decodeContext(compress) {
     let raw_data = LZString.decompressFromBase64(compress);
     let strings = raw_data.split('.');
     let data = strings[0];
@@ -67,10 +67,10 @@ export function decodeContext(compress) {
     }
     //console.log(data);
     //console.log(data === t.source);
-    return htmldecode(decodeURIComponent(atob(data)));
+    return htmldecode(decodeURIComponent(atob(LZString.decompressFromBase64(data))));
 }
 
-export function generateRandomNumbers(rangeStart, rangeEnd, numNumbers) {
+function generateRandomNumbers(rangeStart, rangeEnd, numNumbers) {
     if (numNumbers > (rangeEnd - rangeStart + 1)) {
         throw new Error("Number of requested numbers exceeds range");
     }
@@ -90,7 +90,7 @@ export function generateRandomNumbers(rangeStart, rangeEnd, numNumbers) {
     return randomNumbers;
 }
 
-export function string_move_shift(str, index, shift_index) {
+function string_move_shift(str, index, shift_index) {
     if (index < 0 || index >= str.length || shift_index < 0 || shift_index >= str.length) {
         throw new Error("Invalid indices");
     }
@@ -107,13 +107,13 @@ export function string_move_shift(str, index, shift_index) {
 }
 
 
-export function htmlencode(txt) {
+function htmlencode(txt) {
     var div = document.createElement("div");
     div.appendChild(document.createTextNode(txt));
     return div.innerHTML;
 }
 
-export function htmldecode(txt) {
+function htmldecode(txt) {
     var div = document.createElement("div");
     div.innerHTML = txt;
     return div.innerText || div.textContent;

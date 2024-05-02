@@ -9,8 +9,8 @@ if (@!$routers) exit();
 switch (router(1)) {
     case 'api':
         switch (router(2)) {
-            case "player.php":
-                include_once "router/api/player.php";
+            case "lz_string.php":
+                include_once "router/api/lz_string.php";
                 break;
         }
         break;

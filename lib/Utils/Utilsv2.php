@@ -31,7 +31,7 @@ class Utilsv2
     public static function encodeContext($data): array
     {
         $hash = "";
-        $encodeBase64 = base64_encode(urlencode(htmlspecialchars($data)));
+        $encodeBase64 = LZString::compressToBase64(base64_encode(urlencode(htmlspecialchars($data))));
         $source = $encodeBase64;
         $length = strlen($encodeBase64);
         $randomNumbers = self::generateRandomNumbers(0, $length - 1, intval(($length - 1) / 6));
@@ -67,7 +67,7 @@ class Utilsv2
             $str = self::string_move_shift($data, $i, $hashChunk2[$i]);
             $data = $str[0];
         }
-        return htmlspecialchars_decode(urldecode(base64_decode($data)));
+        return htmlspecialchars_decode(urldecode(base64_decode(LZString::decompressFromBase64($data))));
     }
 
     /**

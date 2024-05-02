@@ -211,7 +211,11 @@ class BootBuilder
 
     public function lz_string()
     {
-        $this->addAsset($this->js('https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js', []));
+        $this->addAsset((new Htmlv2("script"))
+            ->newLine(true)
+            ->close(true)
+            ->attr("src", "https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js")
+            ->build());
         return $this;
     }
 
@@ -356,7 +360,7 @@ class BootBuilder
 
     public function corejs(): BootBuilder
     {
-        $this->addAsset($this->js("js/core.min.js", []));
+        $this->addAsset($this->js("js/core.js", []));
         return $this;
     }
 

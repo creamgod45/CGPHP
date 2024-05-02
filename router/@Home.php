@@ -27,6 +27,7 @@ $bb->setTitle("首頁")
     ->fontawesome()
     ->lz_string()
     ->initialize_css()
+    ->corejs()
     ->menu()
     ->setMenu(true);
 $us = new UserStorage($storage, $uniqueVisiterID->getKey());
