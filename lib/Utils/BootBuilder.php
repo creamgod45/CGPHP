@@ -3,7 +3,6 @@
 namespace Utils;
 
 use Auth\Member;
-use I18N\ELanguageCode;
 use modules\defaultModule;
 use Type\Array\CGArray;
 
@@ -207,6 +206,12 @@ class BootBuilder
             ->attr("rel", "preconnect")
             ->attr("crossorigin", "")
             ->build());
+        return $this;
+    }
+
+    public function lz_string()
+    {
+        $this->addAsset($this->js('https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js', []));
         return $this;
     }
 

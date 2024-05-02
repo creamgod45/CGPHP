@@ -13,9 +13,9 @@
  */
 if (@!$routers) exit();
 
+use Type\Array\CGArray;
 use Utils\ConfigKeyField;
 use Utils\Utils;
-use Type\Array\CGArray;
 
 ?>
 <!DOCTYPE html>

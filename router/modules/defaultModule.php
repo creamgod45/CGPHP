@@ -1,5 +1,5 @@
 <?php
-namespace Modules;
+namespace modules;
 use I18N\ELanguageCode;
 use I18N\ELanguageText;
 use Utils\Htmlv2;
@@ -11,7 +11,7 @@ class defaultModule implements Module
     public static function buildSelectLanguageBar(\I18N\I18N $i18N):string
     {
         $strings="";
-        $ELanguageCodes = ELanguageCode::cases();
+        $ELanguageCodes = $i18N->getELanguageCodeList();
         foreach ($ELanguageCodes as $lang) {
             if($lang === $i18N->getLanguageCode()) continue;
             $strings .= (new Htmlv2("option"))

@@ -138,15 +138,15 @@ zh_HK: 'Traditional Chinese (Hong Kong)'
 zh_SG: 'Traditional Chinese (Singapore)'
 zh_MO: 'Traditional Chinese (Singapore)'
 zu_ZA: 'Zulu (South Africa)'
-RouterTemplatesHomePage_1_Title: 'CGPHP Website Example'
-RouterTemplatesHomePage_2_Description: 'A framework integrating a large number of practical functions'
-RouterTemplatesHomePage_3_IWantToContinueToSee: 'I want to continue to see'
-RouterTemplatesHomePage_4: 'Automatically generate copyright protection information, please see the wiki for source code details'
-RouterTemplatesHomePage_5_View: View
-RouterTemplatesHomePage_6: 'Functional integration for lazy people. Website mode and environment settings still retain the most original PHP functions.'
-RouterTemplatesHomePage_7HelloWorld: "The convenient CGPath CGArray CGString, like the selector class of Java's architecture, can be easily converted to type."
-RouterTemplatesHomePage_8: 'BootBuilder simplifies the complex architecture of the previous generation!!'
-RouterTemplatesHomePage_9: 'Solve the coverage vulnerability of SESSION, use a self-made storage system and encrypt protection'
-RouterTemplatesHomePage_10: 'Use the self-made website file storage system FileBase, adding file management and database storage.'
-RouterTemplatesHomePage_11: 'With an open architecture, the development structure can be extended at will according to personal needs, but you still have to pay attention to issues regarding information security!!'
-RouterTemplatesHomePage_12: "I18N's built-in introduction to international localized language functions is perfectly compatible. I18N->buildLanguageMap() sets the language, and new I18N(null, true) can enter the build language mode."
+RouterTemplatesHomePage_1_Title: 'CGPHP 网站范例'
+RouterTemplatesHomePage_2_Description: 整合大量实用功能的框架
+RouterTemplatesHomePage_3_IWantToContinueToSee: 我想继续查看
+RouterTemplatesHomePage_4: 自动产生版权保护讯息，原始码详情请查看wiki
+RouterTemplatesHomePage_5_View: 查看
+RouterTemplatesHomePage_6: '为懒人提供的功能整合。 网站模式和环境设定仍然保留了最原始的PHP功能。 '
+RouterTemplatesHomePage_7HelloWorld: '方便的CGPath CGArray CGString，就像Java架构的选择器类别一样，可以轻松转换为类型。 '
+RouterTemplatesHomePage_8: 'BootBuilder 简化了上一代的复杂架构！ !'
+RouterTemplatesHomePage_9: 解决SESSION覆盖漏洞，使用自制储存系统并加密保护
+RouterTemplatesHomePage_10: 使用自制网站档案
+RouterTemplatesHomePage_11: '开放的架构，可以根据个人需求随意扩展开发架构，但还是要注意资讯安全问题！ ！ '
+RouterTemplatesHomePage_12: "I18N内建介绍国际在地化语言功能完美相容。 I18N->buildLanguageMap() 设定语言，new I18N(null, true) 可以进入建构语言模式。"

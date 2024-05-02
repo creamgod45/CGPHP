@@ -32,7 +32,7 @@ class I18N
      * @param bool $CompileMode 直接編譯模式(忽略沒有編譯過的詞條) Direct compilation mode (ignoring uncompiled entries)
      * @param ELanguageCode[] $limitMode 允許編譯的語言 Languages that allow compilation
      */
-    public function __construct(?ELanguageCode $languageCode = null, bool $CompileMode= false, array $limitMode=[])
+    public function __construct(?ELanguageCode $languageCode = ELanguageCode::en_US, bool $CompileMode= false, array $limitMode=[])
     {
         $this->ELanguageCodeList=$limitMode;
         $this->buildFirstLanguageFile($CompileMode, $limitMode);
@@ -101,7 +101,7 @@ class I18N
         }
     }
 
-    public function buildCustomizedMap(): void
+    public function buildCustomizedMap()
     {
         new DictionaryMap($this);
     }
@@ -269,8 +269,7 @@ class I18N
         return $this;
     }
 
-    public function setLanguagev2(ELanguageText $elanguageText, string $value, bool $forceChangeValue=false):static
-    {
+    public function setLanguagev2(ELanguageText $elanguageText, string $value, bool $forceChangeValue=false){
         $this->languageTextList[$elanguageText->name] = [$value, $forceChangeValue];
         return $this;
     }
@@ -312,10 +311,13 @@ class I18N
             //Utils::pinv($languageYaml, "before: ".$case->name);
             $change = 0;
             $cgkeys = new CGArray($languageYaml);
+            //debugbar()->info($this->languageTextList);
             foreach ($this->languageTextList as $key => $c) {
-                if (!$cgkeys->hasKey($key) || $this->languageTextList[$key][1]) {
-                    $languageYaml[$key] = $this->languageTextList[$key][0];
-                    $change++;
+                if (is_array($c)) {
+                    if (!$cgkeys->hasKey($key) || $this->languageTextList[$key][1]) {
+                        $languageYaml[$key] = $this->languageTextList[$key][0];
+                        $change++;
+                    }
                 }
             }
             //Utils::pinv($languageYaml, "after: ".$case->name);

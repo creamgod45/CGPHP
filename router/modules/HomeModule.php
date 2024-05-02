@@ -1,13 +1,12 @@
 <?php
-namespace Modules;
+namespace modules;
 use I18N\ELanguageCode;
-use I18N\ELanguageText;
-use Utils\Htmlv2;
+use I18N\I18N;
 use Utils\Module;
 
 class HomeModule extends defaultModule implements Module
 {
-    public static function viewImagesInclude($var, \I18N\I18N $i18N):string
+    public static function viewImagesInclude($var, I18N $i18N):string
     {
         if (
             $i18N->getLanguageCode()===ELanguageCode::zh_TW ||

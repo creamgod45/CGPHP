@@ -25,6 +25,7 @@ $bb->setTitle("首頁")
     ->setContentFile("@Home.php")
     ->bootstrap()
     ->fontawesome()
+    ->lz_string()
     ->initialize_css()
     ->menu()
     ->setMenu(true);

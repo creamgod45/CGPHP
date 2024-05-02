@@ -12,12 +12,10 @@
  * @var bool $routers
  */
 
-use Auth\Member;
 use Auth\UniqueVisiterID;
 use Auth\UserStorage;
 use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
-use Nette\Utils\Json;
 use Server\ApplicationLayer;
 use Server\Request;
 use Type\Array\CGArray;
