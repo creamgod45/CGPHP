@@ -36,11 +36,7 @@ class I18N
     {
         $this->ELanguageCodeList=$limitMode;
         $this->buildFirstLanguageFile($CompileMode, $limitMode);
-        if ($languageCode !== null) {
-            // 選擇語系
-            $this->setLanguageCode($languageCode);
-        }
-        $this->buildMissingLanguageDictionary($limitMode);
+        $this->buildMissingLanguageDictionary($limitMode,$limitMode);
     }
 
     /**
@@ -62,16 +58,23 @@ class I18N
     }
 
     /**
+     * @param $languageCode
      * @param ELanguageCode[] $limitMode
      * @return void
      */
-    public function buildMissingLanguageDictionary(array $limitMode=[]): void
+    public function buildMissingLanguageDictionary($languageCode,array $limitMode=[]): void
     {
         $this->buildLanguageMap();
         if(!empty($limitMode)){
             $this->extracted($limitMode);
         }else{
             $this->extracted(ELanguageCode::cases());
+        }
+        if ($languageCode instanceof ELanguageCode) {
+            // 選擇語系
+            $this->setLanguageCode($languageCode);
+        }else{
+            $this->setLanguageCode(ELanguageCode::en_US);
         }
     }
 
